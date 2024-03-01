@@ -29,7 +29,11 @@
     "@types/jest": "^29.5.12",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "eslint-config-google": "^0.14.0",
     "prisma": "^5.10.2",
     "supertest": "^6.3.4",
     "typescript": "^5.3.3"
