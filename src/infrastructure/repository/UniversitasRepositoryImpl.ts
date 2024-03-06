@@ -2,6 +2,8 @@ import {Universitas} from '@prisma/client';
 import {UniversitasRepository}
   from '../../domain/universitas/UniversitasRepository';
 import {ResponseError} from '../../common/error/response-error';
+import {AddUniversitasInput, EditUniversitasInput}
+  from '../../domain/universitas/entity/universitas';
 
 export class UniversitasRepositoryImpl implements UniversitasRepository {
   db: any;
@@ -10,7 +12,7 @@ export class UniversitasRepositoryImpl implements UniversitasRepository {
     this.db = db;
   }
 
-  async add(universitas: Universitas): Promise<Universitas> {
+  async add(universitas: AddUniversitasInput): Promise<Universitas> {
     const result = await this.db.universitas.create({data: universitas});
 
     return result;
@@ -31,7 +33,7 @@ export class UniversitasRepositoryImpl implements UniversitasRepository {
     return result;
   }
 
-  async editById(id: number, universitas: Universitas): Promise<void> {
+  async editById(id: number, universitas: EditUniversitasInput): Promise<void> {
     try {
       await this.db.universitas.update({
         where: {id: id},
@@ -45,6 +47,17 @@ export class UniversitasRepositoryImpl implements UniversitasRepository {
   async deleteById(id: number): Promise<void> {
     try {
       await this.db.universitas.delete({where: {id: id}});
+    } catch {
+      throw new ResponseError(500, 'failed delete universitas');
+    }
+  }
+
+  async editLogoById(id: number, logoUrl: string): Promise<void> {
+    try {
+      await this.db.universitas.update({
+        where: {id: id},
+        data: {logo_url: logoUrl},
+      });
     } catch {
       throw new ResponseError(500, 'failed delete universitas');
     }
