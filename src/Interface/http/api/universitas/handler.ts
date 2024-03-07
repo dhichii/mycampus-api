@@ -39,7 +39,9 @@ export class UniversitasHandler {
       const data = await this.addUniversitasUsecase.execute(payload);
       res.status(201).json({status: 'success', data});
     } catch (e) {
-      await deleteFile(req.file?.path as string);
+      if (req.file) {
+        await deleteFile(req.file?.path as string);
+      }
       next(e);
     }
   }
