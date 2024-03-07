@@ -4,7 +4,7 @@ import {UniversitasRepository}
 import {Validation} from '../../validation/Validation';
 import {UniversitasValidation} from '../../validation/UniversitasValidation';
 export class GetUniversitasByIdUsecase {
-  constructor(public universitasRepo: UniversitasRepository) {}
+  constructor(private readonly universitasRepo: UniversitasRepository) {}
 
   async execute(id: number): Promise<Universitas> {
     Validation.validate(UniversitasValidation.GET_BY_ID, {id});

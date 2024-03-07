@@ -6,10 +6,7 @@ import {AddUniversitasInput, EditUniversitasInput}
   from '../../domain/universitas/entity/universitas';
 
 export class UniversitasRepositoryImpl implements UniversitasRepository {
-  db: any;
-
-  constructor(db: any) {
-    this.db = db;
+  constructor(private readonly db: any) {
   }
 
   async add(universitas: AddUniversitasInput): Promise<Universitas> {

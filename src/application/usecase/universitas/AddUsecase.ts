@@ -7,7 +7,7 @@ import {Validation} from '../../validation/Validation';
 import {UniversitasValidation} from '../../validation/UniversitasValidation';
 
 export class AddUniversitasUsecase {
-  constructor(public universitasRepo: UniversitasRepository) {}
+  constructor(private readonly universitasRepo: UniversitasRepository) {}
 
   async execute(payload: AddUniversitasReq): Promise<Universitas> {
     Validation.validate(UniversitasValidation.ADD, payload);
