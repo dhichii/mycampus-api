@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "tsc && node dist/app.js",
+    "test": "dotenv -e .env.test -- jest",
+    "test:watch": "dotenv -e .env.test -- jest --watchAll --coverage",
+    "test:watch:change": "dotenv -e .env.test -- jest --watch --coverage",
+    "migrate": "prisma migrate deploy",
+    "migrate:test": "dotenv -e .env.test -- prisma migrate deploy"
   },
   "jest": {
     "transform": {
