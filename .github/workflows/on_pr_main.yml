@@ -33,6 +33,7 @@ jobs:
         run: |
           npm install
           npm run migrate
+          mkdir public
           npm test
         env:
-          DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
