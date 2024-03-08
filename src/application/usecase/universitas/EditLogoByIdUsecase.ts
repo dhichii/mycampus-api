@@ -11,10 +11,10 @@ export class EditLogoUniversitasByIdUsecase {
 
   async execute(payload: EditLogoUniversitasReq) {
     Validation.validate(UniversitasValidation.EDIT_LOGO_BY_ID, payload);
-    const {id, path, logo_url: logoUrl} = payload;
+    const {id, path, logo} = payload;
     const {logo_url: oldLogoUrl} = await this.universitasRepo.getById(id);
 
-    await this.universitasRepo.editLogoById(id, logoUrl);
+    await this.universitasRepo.editLogoById(id, logo);
     await deleteFile(path + oldLogoUrl);
   }
 }

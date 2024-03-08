@@ -9,14 +9,18 @@ export const errorMiddleware = async (
     next: NextFunction) => {
   if (error) {
     let status: number;
+    let message: any[];
     if (error instanceof ResponseError) {
       status = error.status;
+      message = [{message: error.message}];
     } else if (error instanceof ZodError) {
       status = 400;
+      message = JSON.parse(error.message);
     } else {
       status = 500;
+      message = [{message: 'Internal Server Error'}];
     }
 
-    res.status(status).json({error: error.message});
+    res.status(status).json({errors: message});
   }
 };

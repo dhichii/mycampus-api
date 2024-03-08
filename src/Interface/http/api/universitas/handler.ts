@@ -34,12 +34,14 @@ export class UniversitasHandler {
     try {
       const payload = {
         ...req.body,
-        logo_url: req.file?.filename,
+        logo: req.file?.filename,
       } as AddUniversitasReq;
       const data = await this.addUniversitasUsecase.execute(payload);
       res.status(201).json({status: 'success', data});
     } catch (e) {
-      await deleteFile(req.file?.path as string);
+      if (req.file) {
+        await deleteFile(req.file?.path as string);
+      }
       next(e);
     }
   }
@@ -65,7 +67,7 @@ export class UniversitasHandler {
 
   async editById(req: Request, res: Response, next: NextFunction) {
     try {
-      const payload = req.body;
+      const payload = {...req.body};
       payload.id = parseInt(req.params.id);
       await this.editUniversitasByIdUsecase.execute(payload);
       res.status(200).json({status: 'success'});
@@ -89,12 +91,14 @@ export class UniversitasHandler {
       const payload = {
         id: parseInt(req.params.id),
         path: this.logoPath,
-        logo_url: req.file?.filename,
+        logo: req.file?.filename,
       } as EditLogoUniversitasReq;
       await this.editLogoUniversitasByIdUsecase.execute(payload);
       res.status(200).json({status: 'success'});
     } catch (e) {
-      await deleteFile(req.file?.path as string);
+      if (req.file) {
+        await deleteFile(req.file?.path as string);
+      }
       next(e);
     }
   }
