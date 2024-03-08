@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/app.js",
-    "dev": "tsc && node dist/app.js",
+    "dev": "tsc -p tsconfig.build.json && node dist/app.js",
     "test": "dotenv -e .env.test -- jest",
     "test:watch": "dotenv -e .env.test -- jest --watchAll --coverage",
     "test:watch:change": "dotenv -e .env.test -- jest --watch --coverage",
