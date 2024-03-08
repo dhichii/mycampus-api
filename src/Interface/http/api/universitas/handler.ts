@@ -67,7 +67,7 @@ export class UniversitasHandler {
 
   async editById(req: Request, res: Response, next: NextFunction) {
     try {
-      const payload = req.body;
+      const payload = {...req.body};
       payload.id = parseInt(req.params.id);
       await this.editUniversitasByIdUsecase.execute(payload);
       res.status(200).json({status: 'success'});
