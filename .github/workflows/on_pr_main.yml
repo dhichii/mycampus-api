@@ -35,4 +35,4 @@ jobs:
           npm run migrate
           npm test
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "${{ secrets.DATABASE_URL }}"
