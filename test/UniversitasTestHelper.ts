@@ -13,7 +13,7 @@ export const UniversitasTestHelper = {
   },
 
   async findById(id = 1) {
-    await prismaClient.universitas.findFirst({where: {id: id}});
+    return prismaClient.universitas.findFirst({where: {id: id}});
   },
 
   async clean() {
