@@ -2,7 +2,7 @@ export type AddUniversitasReq = {
   nama: string;
   alamat: string;
   keterangan: string;
-  logo_url: string;
+  logo: string;
 }
 
 export type AddUniversitasInput = {
@@ -28,13 +28,18 @@ export type EditUniversitasInput = {
 export type EditLogoUniversitasReq = {
   id: number;
   path: string;
-  logo_url: string;
+  logo: string;
 }
 
 export function mapAddUniversitasReq(
     req: AddUniversitasReq,
 ): AddUniversitasInput {
-  return {...req};
+  return {
+    nama: req.nama,
+    alamat: req.alamat,
+    keterangan: req.keterangan,
+    logo_url: req.logo,
+  };
 };
 
 export function mapEditUniversitasReq(

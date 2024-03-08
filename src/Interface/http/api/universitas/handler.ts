@@ -34,7 +34,7 @@ export class UniversitasHandler {
     try {
       const payload = {
         ...req.body,
-        logo_url: req.file?.filename,
+        logo: req.file?.filename,
       } as AddUniversitasReq;
       const data = await this.addUniversitasUsecase.execute(payload);
       res.status(201).json({status: 'success', data});
@@ -91,7 +91,7 @@ export class UniversitasHandler {
       const payload = {
         id: parseInt(req.params.id),
         path: this.logoPath,
-        logo_url: req.file?.filename,
+        logo: req.file?.filename,
       } as EditLogoUniversitasReq;
       await this.editLogoUniversitasByIdUsecase.execute(payload);
       res.status(200).json({status: 'success'});
