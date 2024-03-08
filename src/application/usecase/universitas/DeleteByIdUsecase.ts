@@ -8,7 +8,7 @@ export class DeleteUniversitasByIdUsecase {
   constructor(private readonly universitasRepo: UniversitasRepository) {}
 
   async execute(id: number, path: string) {
-    Validation.validate(UniversitasValidation.DELETE_BY_ID, {id});
+    Validation.validate(UniversitasValidation.DELETE_BY_ID, {id, path});
     const {logo_url: url} = await this.universitasRepo.getById(id);
     await this.universitasRepo.deleteById(id);
     await deleteFile(path + url);
