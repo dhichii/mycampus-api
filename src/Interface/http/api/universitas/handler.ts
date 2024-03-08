@@ -96,7 +96,9 @@ export class UniversitasHandler {
       await this.editLogoUniversitasByIdUsecase.execute(payload);
       res.status(200).json({status: 'success'});
     } catch (e) {
-      await deleteFile(req.file?.path as string);
+      if (req.file) {
+        await deleteFile(req.file?.path as string);
+      }
       next(e);
     }
   }
