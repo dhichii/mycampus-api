@@ -7,6 +7,7 @@ export const initServer = () => {
   app.get('/api/v1', function(req, res) {
     res.status(200).json({message: 'Welcome to MyCampus API'});
   });
+  app.use('/api/v1/images', express.static('public'));
   app.use('/api/v1', universitasRouter());
   app.use(errorMiddleware);
 
