@@ -49,7 +49,7 @@ $ npm install
 $ npm run build
 ```
 
-After build, copy and configure the `.env.example` file to be `.env` for the main configuration and `.env.test` for the testing purposes. Finally, run the `npm start` command to start.
+After build, copy and configure the `.env.example` file to be `.env` for the main configuration and `.env.test` for the testing purposes. Finally, run the `npm run migrate` to migrate db and `npm start` command to start.
 
 ## Contact
 
