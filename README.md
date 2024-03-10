@@ -21,6 +21,7 @@
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
+    <li><a href="#api-spec">API Spec</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#contributors">Contributors</a></li>
   </ol>
@@ -50,6 +51,9 @@ $ npm run build
 ```
 
 After build, copy and configure the `.env.example` file to be `.env` for the main configuration and `.env.test` for the testing purposes. Finally, run the `npm run migrate` to migrate db and `npm start` command to start.
+
+## API Spec
+For the API Spec documentation, you can access it [HERE](https://github.com/dhichii/mycampus-api/tree/main/doc).
 
 ## Contact
 
