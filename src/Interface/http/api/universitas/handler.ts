@@ -49,7 +49,7 @@ export class UniversitasHandler {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await this.getAllUniversitasUsecase.execute();
-      res.status(200).json({data});
+      res.json({data});
     } catch (e) {
       next(e);
     }
@@ -59,7 +59,7 @@ export class UniversitasHandler {
     try {
       const id = parseInt(req.params.id);
       const data = await this.getUniversitasByIdUsecase.execute(id);
-      res.status(200).json({status: 'success', data});
+      res.json({status: 'success', data});
     } catch (e) {
       next(e);
     }
@@ -70,7 +70,7 @@ export class UniversitasHandler {
       const payload = {...req.body};
       payload.id = parseInt(req.params.id);
       await this.editUniversitasByIdUsecase.execute(payload);
-      res.status(200).json({status: 'success'});
+      res.json({status: 'success'});
     } catch (e) {
       next(e);
     }
@@ -80,7 +80,7 @@ export class UniversitasHandler {
     try {
       const id = parseInt(req.params.id);
       await this.deleteUniversitasByIdUsecase.execute(id, this.logoPath);
-      res.status(200).json({status: 'success'});
+      res.json({status: 'success'});
     } catch (e) {
       next(e);
     }
@@ -94,7 +94,7 @@ export class UniversitasHandler {
         logo: req.file?.filename,
       } as EditLogoUniversitasReq;
       await this.editLogoUniversitasByIdUsecase.execute(payload);
-      res.status(200).json({status: 'success'});
+      res.json({status: 'success'});
     } catch (e) {
       if (req.file) {
         await deleteFile(req.file?.path as string);
