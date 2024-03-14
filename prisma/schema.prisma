@@ -29,3 +29,21 @@ model Sekolah {
 
   @@map("sekolah")
 }
+
+model Akun {
+  id String @id @db.VarChar(120)
+  email String @unique @db.VarChar(120)
+  password String @db.VarChar(255)
+  role Role
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime
+  @@map("akun")
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+  PENDAFTAR
+  SEKOLAH
+}
