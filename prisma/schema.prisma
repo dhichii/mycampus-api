@@ -31,14 +31,28 @@ model Sekolah {
 }
 
 model Akun {
-  id String @id @db.VarChar(120)
+  id String @id @db.VarChar(255)
   email String @unique @db.VarChar(120)
   password String @db.VarChar(255)
   role Role
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  deleted_at DateTime
+  deleted_at DateTime?
+  admin Admin?
+
   @@map("akun")
+}
+
+model Admin {
+  id String @id @db.VarChar(255)
+  nama String @unique @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted_at DateTime?
+  akun Akun @relation(fields: [id], references: [id])
+
+  @@map("admin")
 }
 
 enum Role {
@@ -46,4 +60,9 @@ enum Role {
   OPERATOR
   PENDAFTAR
   SEKOLAH
+}
+
+enum Jenis_Kelamin {
+  L
+  P
 }
