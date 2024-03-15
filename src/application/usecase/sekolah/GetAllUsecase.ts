@@ -6,7 +6,7 @@ export class GetAllSekolahUsecase {
   constructor(private readonly sekolahRepo: SekolahRepository) {}
 
   async execute({search = '', limit = 10, page = 1}: GetAllSekolahInput) {
-    search.toUpperCase();
+    search = search.toUpperCase();
 
     const [totalResult, data] = await this.sekolahRepo
         .getAll({search, limit, page});
