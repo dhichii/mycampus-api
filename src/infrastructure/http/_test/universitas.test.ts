@@ -24,7 +24,7 @@ describe('api/v1/universitas endpoint', () => {
 
     it('should add universitas successfully', async () => {
       const request = {
-        nama: 'nama=xxdsffjhgfhgdsfdfdsgf',
+        nama: 'xxdsffjhgfhgdsfdfdsgf',
         alamat: 'xxdsffjhgfhgdsfdfdsgf',
         keterangan: 'xxdsffjhgfhgdsfdfdsgf',
       };
@@ -41,7 +41,7 @@ describe('api/v1/universitas endpoint', () => {
       expect(response.status).toEqual(201);
       expect(response.body.data).toBeDefined();
       expect(id).toBeDefined();
-      expect(nama).toEqual(request.nama);
+      expect(nama).toEqual(request.nama.toUpperCase());
       expect(alamat).toEqual(request.alamat);
       expect(keterangan).toEqual(request.keterangan);
       expect(logo).toBeDefined();
@@ -149,7 +149,7 @@ describe('api/v1/universitas endpoint', () => {
       await UniversitasTestHelper.add(univData);
 
       const request = {
-        nama: 'nama=xxdsffjhgfhgdsfdfdsgf',
+        nama: 'xxdsffjhgfhgdsfdfdsgf',
         alamat: 'xxdsffjhgfhgdsfdfdsgf',
         keterangan: 'xxdsffjhgfhgdsfdfdsgf',
       };
@@ -162,7 +162,7 @@ describe('api/v1/universitas endpoint', () => {
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toBe('success');
-      expect(universitas?.nama).toBe(request.nama);
+      expect(universitas?.nama).toBe(request.nama.toUpperCase());
       expect(universitas?.alamat).toBe(request.alamat);
       expect(universitas?.keterangan).toBe(request.keterangan);
     });
