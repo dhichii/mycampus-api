@@ -35,7 +35,7 @@ export function mapAddUniversitasReq(
     req: AddUniversitasReq,
 ): AddUniversitasInput {
   return {
-    nama: req.nama,
+    nama: req.nama.toUpperCase(),
     alamat: req.alamat,
     keterangan: req.keterangan,
     logo_url: req.logo,
@@ -46,7 +46,7 @@ export function mapEditUniversitasReq(
     req: EditUniversitasReq,
 ): EditUniversitasInput {
   return {
-    nama: req.nama,
+    nama: req.nama.toUpperCase(),
     alamat: req.alamat,
     keterangan: req.keterangan,
   };
