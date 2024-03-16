@@ -26,6 +26,8 @@ model Universitas {
 model Sekolah {
   id String @id @db.VarChar(255)
   nama String @unique @db.VarChar(255)
+  pendaftar Pendaftar[]
+  pihak_sekolah PihakSekolah[]
 
   @@map("sekolah")
 }
@@ -39,6 +41,9 @@ model Akun {
   updated_at DateTime @updatedAt
   deleted_at DateTime?
   admin Admin?
+  operator Operator?
+  pendaftar Pendaftar?
+  pihak_sekolah PihakSekolah?
 
   @@map("akun")
 }
@@ -47,12 +52,61 @@ model Admin {
   id String @id @db.VarChar(255)
   nama String @unique @db.VarChar(120)
   jenis_kelamin Jenis_Kelamin
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   deleted_at DateTime?
   akun Akun @relation(fields: [id], references: [id])
 
   @@map("admin")
+}
+
+model Operator {
+  id String @id @db.VarChar(255)
+  id_universitas String @unique @db.VarChar(120)
+  nama String @unique @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  akun Akun @relation(fields: [id], references: [id])
+
+  @@map("operator")
+}
+
+model Pendaftar {
+  id String @id @db.VarChar(255)
+  id_sekolah String @unique @db.VarChar(255)
+  nama String @unique @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  alamat String @db.VarChar(255)
+  asal_daerah String @db.VarChar(255)
+  no_hp String @db.VarChar(20)
+  no_wa String? @db.VarChar(20)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  asal_sekolah Sekolah @relation(fields: [id_sekolah], references: [id])
+  akun Akun @relation(fields: [id], references: [id])
+
+  @@map("pendaftar")
+}
+
+
+model PihakSekolah {
+  id String @id @db.VarChar(255)
+  id_sekolah String @unique @db.VarChar(255)
+  nama String @unique @db.VarChar(120)
+  jabatan String @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  no_hp String @db.VarChar(20)
+  no_wa String? @db.VarChar(20)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  asal_sekolah Sekolah @relation(fields: [id_sekolah], references: [id])
+  akun Akun @relation(fields: [id], references: [id])
+
+  @@map("pihak_sekolah")
 }
 
 enum Role {
