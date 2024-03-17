@@ -19,6 +19,7 @@ model Universitas {
   alamat String @db.VarChar(255)
   keterangan String @db.Text
   logo_url String @db.VarChar(255)
+  operator Operator[]
 
   @@map("universitas")
 }
@@ -50,7 +51,7 @@ model Akun {
 
 model Admin {
   id String @id @db.VarChar(255)
-  nama String @unique @db.VarChar(120)
+  nama String @db.VarChar(120)
   jenis_kelamin Jenis_Kelamin
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -62,21 +63,22 @@ model Admin {
 
 model Operator {
   id String @id @db.VarChar(255)
-  id_universitas String @unique @db.VarChar(120)
-  nama String @unique @db.VarChar(120)
+  id_universitas Int
+  nama String @db.VarChar(120)
   jenis_kelamin Jenis_Kelamin
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   deleted_at DateTime?
   akun Akun @relation(fields: [id], references: [id])
+  universitas Universitas @relation(fields: [id_universitas], references: [id])
 
   @@map("operator")
 }
 
 model Pendaftar {
   id String @id @db.VarChar(255)
-  id_sekolah String @unique @db.VarChar(255)
-  nama String @unique @db.VarChar(120)
+  id_sekolah String @db.VarChar(255)
+  nama String @db.VarChar(120)
   jenis_kelamin Jenis_Kelamin
   alamat String @db.VarChar(255)
   asal_daerah String @db.VarChar(255)
@@ -94,8 +96,8 @@ model Pendaftar {
 
 model PihakSekolah {
   id String @id @db.VarChar(255)
-  id_sekolah String @unique @db.VarChar(255)
-  nama String @unique @db.VarChar(120)
+  id_sekolah String @db.VarChar(255)
+  nama String @db.VarChar(120)
   jabatan String @db.VarChar(120)
   jenis_kelamin Jenis_Kelamin
   no_hp String @db.VarChar(20)
