@@ -33,6 +33,14 @@ model Sekolah {
   @@map("sekolah")
 }
 
+model Authentication {
+  token String @id @db.VarChar(255)
+  expires_at DateTime
+  is_used Boolean
+
+  @@map("authentication")
+}
+
 model Akun {
   id String @id @db.VarChar(255)
   email String @unique @db.VarChar(120)
