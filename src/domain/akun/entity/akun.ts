@@ -1,8 +1,8 @@
-import {v4 as uuid} from 'uuid';
 import {Role} from '@prisma/client';
 import {Bcrypt} from '../../../infrastructure/security/Bcrypt';
 
 export type AddAkunReq = {
+  id: string;
   email: string;
   password: string;
   role: Role;
@@ -34,7 +34,7 @@ export type LoginRes = {
 export async function mapAddAdkunReq(req: AddAkunReq): Promise<AddAkunInput> {
   const password = await new Bcrypt().hash(req.password);
   return {
-    id: uuid(),
+    id: req.id,
     email: req.email,
     password: password,
     role: req.role,
