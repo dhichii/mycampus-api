@@ -1,4 +1,4 @@
-import {Role} from '@prisma/client';
+import {Role} from '../../../util/enum';
 import {Bcrypt} from '../../../infrastructure/security/Bcrypt';
 
 export type AddAkunReq = {
