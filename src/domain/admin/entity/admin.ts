@@ -37,14 +37,14 @@ export type EditAdminInput = {
 export function mapAddAdminReq(req: AddAdminReq, id: string): AddAdminInput {
   return {
     id,
-    nama: req.nama,
+    nama: req.nama.toUpperCase(),
     jenis_kelamin: req.jenis_kelamin,
   };
 }
 
 export function mapEditAdminReq(req: EditAdminReq): EditAdminInput {
   return {
-    nama: req.nama,
+    nama: req.nama.toUpperCase(),
     jenis_kelamin: req.jenis_kelamin,
   };
 }
