@@ -34,7 +34,7 @@ export class AkunRepositoryImpl implements AkunRepository {
   }
 
   async getById(id: string): Promise<Akun> {
-    const data = await this.db.akun.findUnique({where: {id}});
+    const data = await this.db.akun.findUnique({where: {id, deleted_at: null}});
     if (!data) {
       throw new ResponseError(404, 'akun tidak ditemukan');
     }
@@ -84,7 +84,7 @@ export class AkunRepositoryImpl implements AkunRepository {
   }
 
   async verify(id: string): Promise<void> {
-    const result = await this.db.akun.count({where: {id: id}});
+    const result = await this.db.akun.count({where: {id, deleted_at: null}});
     if (!result) {
       throw new ResponseError(404, 'akun tidak ditemukan');
     }
