@@ -44,7 +44,7 @@ export class AkunRepositoryImpl implements AkunRepository {
 
   async changeEmail(id: string, email: string): Promise<void> {
     try {
-      await this.db.akun.create({where: {id}, data: {email}});
+      await this.db.akun.update({where: {id}, data: {email}});
     } catch (e) {
       isPrismaError(e);
 
@@ -54,7 +54,7 @@ export class AkunRepositoryImpl implements AkunRepository {
 
   async changePassword(id: string, password: string): Promise<void> {
     try {
-      await this.db.akun.create({where: {id}, data: {password}});
+      await this.db.akun.update({where: {id}, data: {password}});
     } catch (e) {
       isPrismaError(e);
 
