@@ -42,7 +42,7 @@ export function mapAddAdminReq(req: AddAdminReq, id: string): AddAdminInput {
   };
 }
 
-export function mapEditAdminReq(req: AddAdminReq): EditAdminInput {
+export function mapEditAdminReq(req: EditAdminReq): EditAdminInput {
   return {
     nama: req.nama,
     jenis_kelamin: req.jenis_kelamin,
