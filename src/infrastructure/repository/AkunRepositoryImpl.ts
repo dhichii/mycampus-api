@@ -42,6 +42,16 @@ export class AkunRepositoryImpl implements AkunRepository {
     return data;
   }
 
+  async getAllByIds(ids: string[]): Promise<Akun[]> {
+    return await this.db.akun.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
+
   async changeEmail(id: string, email: string): Promise<void> {
     try {
       await this.db.akun.update({where: {id}, data: {email}});
