@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/app.js",
-    "dev": "tsc -p tsconfig.build.json && node dist/app.js",
+    "dev": "ts-node src/app.ts",
     "test": "dotenv -e .env.test -- jest",
     "test:watch": "dotenv -e .env.test -- jest --watchAll --coverage",
     "test:watch:change": "dotenv -e .env.test -- jest --watch --coverage",
@@ -48,6 +48,7 @@
     "jest": "^29.7.0",
     "prisma": "^5.10.2",
     "supertest": "^6.3.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
