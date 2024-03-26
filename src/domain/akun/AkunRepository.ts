@@ -7,6 +7,6 @@ export interface AkunRepository {
   getById(id: string): Promise<Akun>;
   changeEmail(id: string, email: string): Promise<void>;
   changePassword(id: string, password: string): Promise<void>;
-  delete(id: string): Promise<void>;
+  deleteById(id: string): Promise<void>;
   verify(id: string): Promise<void>;
 }
