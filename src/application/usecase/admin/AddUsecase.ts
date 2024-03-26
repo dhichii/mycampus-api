@@ -23,5 +23,7 @@ export class AddAdminUsecase {
           .execute({id, email, password, role: Role.ADMIN});
       await this.adminRepo.add(mapAddAdminReq(payload, id));
     });
+
+    return id;
   }
 }
