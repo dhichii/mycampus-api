@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {prismaClient} from '../src/infrastructure/database/prisma';
 
 export const SekolahTestHelper = {
