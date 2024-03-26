@@ -27,9 +27,9 @@ export class AdminHandler {
   async add(req: Request, res: Response, next: NextFunction) {
     try {
       const payload: AddAdminReq = {...req.body};
-      await this.addAdminUsecase.execute(payload);
+      const id = await this.addAdminUsecase.execute(payload);
 
-      res.status(201).json({status: 'success'});
+      res.status(201).json({status: 'success', data: {id}});
     } catch (e) {
       next(e);
     }
