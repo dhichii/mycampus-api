@@ -62,21 +62,21 @@ export class AkunRepositoryImpl implements AkunRepository {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteById(id: string): Promise<void> {
     try {
       await this.db.akun.update({
         where: {id: id},
         data: {deleted_at: new Date()},
       });
     } catch {
-      throw new ResponseError(500, 'failed delete sekolah');
+      throw new ResponseError(500, 'failed delete akun');
     }
   }
 
   async verify(id: string): Promise<void> {
     const result = await this.db.akun.count({where: {id: id}});
     if (!result) {
-      throw new ResponseError(404, 'akun not found');
+      throw new ResponseError(404, 'akun tidak ditemukan');
     }
   }
 }
