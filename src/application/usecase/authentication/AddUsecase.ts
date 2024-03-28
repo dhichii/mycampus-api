@@ -1,3 +1,4 @@
+import {JwtPayload} from 'jsonwebtoken';
 import {ResponseError} from '../../../common/error/response-error';
 import {AuthenticationRepository}
   from '../../../domain/authentication/AuthenticationRepository';
@@ -8,8 +9,12 @@ export class AddAuthenticationUsecase {
 
   async execute(refreshToken: string) {
     try {
-      await new Jwt().verifyRefreshToken(refreshToken);
-      await this.authenticationRepo.add(refreshToken);
+      const jwt = await new Jwt()
+          .verifyRefreshToken(refreshToken) as JwtPayload;
+      // convert from nanomilis to Date
+      const exp = new Date(jwt.exp as number / 1000000);
+
+      await this.authenticationRepo.add(refreshToken, exp);
     } catch {
       throw new ResponseError(401, 'sesi kadaluarsa, silahkan login kembali');
     }
