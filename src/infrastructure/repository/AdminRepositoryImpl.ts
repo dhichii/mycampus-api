@@ -46,7 +46,7 @@ export class AdminRepositoryImpl implements AdminRepository {
 
   async editById(id: string, req: EditAdminInput): Promise<void> {
     try {
-      await this.db.akun.update({where: {id}, data: {req}});
+      await this.db.admin.update({where: {id}, data: req});
     } catch (e) {
       isPrismaError(e);
 
