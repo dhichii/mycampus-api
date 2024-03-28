@@ -4,7 +4,7 @@ import {AuthenticationRepository}
 import {Jwt} from '../../../infrastructure/security/Jwt';
 import {ResponseError} from '../../../common/error/response-error';
 
-export class GetTokenUsecase {
+export class GetAuthenticationUsecase {
   constructor(private readonly authenticationRepo: AuthenticationRepository) {}
 
   async execute(refreshToken: string) {
