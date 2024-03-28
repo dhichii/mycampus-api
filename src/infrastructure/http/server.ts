@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import {errorMiddleware} from '../../Interface/http/middleware/error';
 import {universitasRouter} from '../../Interface/http/api/universitas/router';
 import {sekolahRouter} from '../../Interface/http/api/sekolah/router';
+import {adminRouter} from '../../Interface/http/api/admin/router';
 
 export const initServer = () => {
   const app = express();
@@ -15,7 +16,7 @@ export const initServer = () => {
   app.use(bodyParser.json(), cookieParser());
 
   app.use('/api/v1/images', express.static('public'));
-  app.use('/api/v1', universitasRouter(), sekolahRouter());
+  app.use('/api/v1', universitasRouter(), sekolahRouter(), adminRouter());
   app.use(errorMiddleware);
 
   return app;
