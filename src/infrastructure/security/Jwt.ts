@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export type JwtPayload = {
+export type JwtAccessPayload = {
   id: string;
   nama: string;
   email: string;
@@ -8,7 +8,7 @@ export type JwtPayload = {
 }
 
 export class Jwt {
-  async createAccessToken(payload: JwtPayload) {
+  async createAccessToken(payload: JwtAccessPayload) {
     return jwt.sign(
         {...payload},
         process.env.ACCESS_TOKEN_KEY as string,
@@ -32,7 +32,7 @@ export class Jwt {
     return jwt.verify(token, process.env.REFRESH_TOKEN_KEY as string);
   }
 
-  mapAccessPayload(payload: JwtPayload) {
+  mapAccessPayload(payload: JwtAccessPayload) {
     return {
       id: payload.id,
       nama: payload.nama,
