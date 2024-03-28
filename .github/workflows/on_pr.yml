@@ -2,8 +2,6 @@ name: "running test"
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - '**/*.ts'
 
