@@ -31,4 +31,13 @@ export class Jwt {
   async verifyRefreshToken(token: string) {
     return jwt.verify(token, process.env.REFRESH_TOKEN_KEY as string);
   }
+
+  mapAccessPayload(payload: JwtPayload) {
+    return {
+      id: payload.id,
+      nama: payload.nama,
+      email: payload.nama,
+      role: payload.role,
+    };
+  }
 }
