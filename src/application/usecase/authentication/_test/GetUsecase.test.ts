@@ -23,7 +23,6 @@ describe('GetAuthenticationUsecase', () => {
       expect(mockAuthenticationRepo.get).toHaveBeenCalledWith('x');
       expect(mockAuthenticationRepo.delete).toHaveBeenCalledWith('x');
     } catch (e: any) {
-      console.log(e);
       expect(e).toBeInstanceOf(ResponseError);
       expect(e.message).toEqual('sesi kadaluarsa, silahkan login kembali');
       expect(e.status).toEqual(401);
