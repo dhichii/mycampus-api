@@ -36,4 +36,8 @@ jobs:
           mkdir public
           npm test
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+          ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY_TEST }}
+          REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY_TEST }}
+          ACCESS_TOKEN_AGE: ${{ secrets.ACCESS_TOKEN_AGE_TEST }}
+          REFRESH_TOKEN_AGE: ${{ secrets.REFRESH_TOKEN_AGE_TEST }}
