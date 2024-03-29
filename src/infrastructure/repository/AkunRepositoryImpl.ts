@@ -27,7 +27,7 @@ export class AkunRepositoryImpl implements AkunRepository {
       },
     });
     if (!data) {
-      throw new ResponseError(401, 'email password salah');
+      throw new ResponseError(401, 'email atau password salah');
     }
 
     return data;
