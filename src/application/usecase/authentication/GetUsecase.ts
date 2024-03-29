@@ -7,7 +7,7 @@ export class GetAuthenticationUsecase {
   constructor(private readonly authenticationRepo: AuthenticationRepository) {}
 
   async execute(refreshToken: string) {
-    await this.authenticationRepo.get(refreshToken);
+    const refresh = await this.authenticationRepo.get(refreshToken);
     try {
       await new Jwt().verifyRefreshToken(refreshToken);
     } catch (e) {
@@ -15,5 +15,7 @@ export class GetAuthenticationUsecase {
 
       throw new ResponseError(401, 'sesi kadaluarsa, silahkan login kembali');
     }
+
+    return refresh;
   }
 }
