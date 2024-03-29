@@ -1,10 +1,9 @@
-import {TokenExpiredError} from 'jsonwebtoken';
 import {AuthenticationRepository}
   from '../../../domain/authentication/AuthenticationRepository';
 import {Jwt} from '../../../infrastructure/security/Jwt';
 import {ResponseError} from '../../../common/error/response-error';
 
-export class GetTokenUsecase {
+export class GetAuthenticationUsecase {
   constructor(private readonly authenticationRepo: AuthenticationRepository) {}
 
   async execute(refreshToken: string) {
@@ -12,9 +11,7 @@ export class GetTokenUsecase {
     try {
       await new Jwt().verifyRefreshToken(refreshToken);
     } catch (e) {
-      if (e instanceof TokenExpiredError) {
-        await this.authenticationRepo.delete(refreshToken);
-      }
+      await this.authenticationRepo.delete(refreshToken);
 
       throw new ResponseError(401, 'sesi kadaluarsa, silahkan login kembali');
     }
