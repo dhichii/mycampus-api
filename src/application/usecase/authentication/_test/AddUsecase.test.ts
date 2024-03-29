@@ -21,7 +21,12 @@ describe('AddAuthenticationUsecase', () => {
 
   it('should orchestrating the add authentication correctly', async () => {
     const jwt = new Jwt();
-    const refreshToken = await jwt.createRefreshToken('x');
+    const refreshToken = await jwt.createRefreshToken(jwt.mapJwtSignPayload({
+      id: 'x',
+      nama: 'x',
+      email: 'x',
+      role: 'x',
+    }));
 
     const mockAuthenticationRepo = {} as AuthenticationRepository;
 

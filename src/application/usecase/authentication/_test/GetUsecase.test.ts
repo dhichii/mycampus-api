@@ -31,20 +31,29 @@ describe('GetAuthenticationUsecase', () => {
 
   it('should orchestrating the get authentication correctly', async () => {
     const jwt = new Jwt();
-    const refreshToken = await jwt.createRefreshToken('x');
-
-    const mockAuthenticationRepo = {} as AuthenticationRepository;
-
-    mockAuthenticationRepo.get = jest.fn(() => Promise.resolve({
+    const refreshToken = await jwt.createRefreshToken(jwt.mapJwtSignPayload({
+      id: 'x',
+      nama: 'x',
+      email: 'x',
+      role: 'x',
+    }));
+    const expectedResponse = {
       token: refreshToken,
       expires_at: new Date(),
       is_used: false,
-    }));
+    };
+
+    const mockAuthenticationRepo = {} as AuthenticationRepository;
+
+    mockAuthenticationRepo.get = jest.fn(() => Promise.resolve(
+        expectedResponse,
+    ));
     mockAuthenticationRepo.delete = jest.fn(() => Promise.resolve());
 
     const usecase = new GetAuthenticationUsecase(mockAuthenticationRepo);
     const authentication = await usecase.execute(refreshToken);
 
     expect(() => authentication).not.toThrow(ResponseError);
+    expect(authentication).toStrictEqual(expectedResponse);
   });
 });
