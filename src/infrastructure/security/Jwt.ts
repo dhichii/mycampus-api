@@ -32,6 +32,10 @@ export class Jwt {
     return jwt.verify(token, process.env.REFRESH_TOKEN_KEY as string);
   }
 
+  async decode(token: string) {
+    return jwt.decode(token);
+  }
+
   mapJwtSignPayload(payload: JwtSignPayload) {
     return {
       id: payload.id,
