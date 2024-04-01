@@ -55,6 +55,6 @@ export class LoginUsecase {
     // store refresh token
     await this.addAuthenticationUsecase.execute(refresh);
 
-    return {access, refresh};
+    return {access: 'Bearer ' + access, refresh: 'Bearer ' + refresh};
   }
 }
