@@ -4,11 +4,9 @@ import {RefreshAuthenticationUsecase}
 import {AuthenticationRepositoryImpl}
   from '../../../../infrastructure/repository/AuthenticationRepositoryImpl';
 import {prismaClient} from '../../../../infrastructure/database/prisma';
+import {AuthenticationHandler} from './handler';
 import {GetAuthenticationUsecase}
   from '../../../../application/usecase/authentication/GetUsecase';
-import {AddAuthenticationUsecase}
-  from '../../../../application/usecase/authentication/AddUsecase';
-import {AuthenticationHandler} from './handler';
 
 export function authenticationRouter() {
   // eslint-disable-next-line new-cap
@@ -20,11 +18,9 @@ export function authenticationRouter() {
   // usecase
   const getAuthenticationUsecase =
     new GetAuthenticationUsecase(authenticationRepo);
-  const addAuthenticationUsecase =
-    new AddAuthenticationUsecase(authenticationRepo);
   const refreshAuthenticationUsecase = new RefreshAuthenticationUsecase(
+      authenticationRepo,
       getAuthenticationUsecase,
-      addAuthenticationUsecase,
   );
 
   const handler = new AuthenticationHandler(refreshAuthenticationUsecase);

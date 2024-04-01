@@ -18,7 +18,8 @@ export class AuthenticationHandler {
       const {refresh} = verifyAuthorizationCookie(req.cookies.Authorization);
 
       const data = await this.refreshAuthenticationUsecase.execute(refresh);
-      const refreshPayload = await new Jwt().decode(data.refresh) as JwtPayload;
+      const refreshPayload = await new Jwt()
+          .decode(data.refresh.split('Bearer ')[1]) as JwtPayload;
 
       res.cookie(
           'Authorization',
