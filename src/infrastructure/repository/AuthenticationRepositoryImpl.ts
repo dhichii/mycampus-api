@@ -25,6 +25,6 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   async delete(token: string) {
-    await this.db.authentication.delete({where: token});
+    await this.db.authentication.delete({where: {token}});
   }
 }
