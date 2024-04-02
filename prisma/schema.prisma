@@ -34,7 +34,7 @@ model Sekolah {
 }
 
 model Authentication {
-  token String @id @db.VarChar(255)
+  token String @id @db.VarChar(300)
   expires_at DateTime
   is_used Boolean @default(false)
 
