@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "authentication" (
-    "token" VARCHAR(255) NOT NULL,
+    "token" VARCHAR(300) NOT NULL,
     "expires_at" TIMESTAMP(3) NOT NULL,
     "is_used" BOOLEAN NOT NULL DEFAULT false,
 
