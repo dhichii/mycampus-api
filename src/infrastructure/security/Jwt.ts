@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
 
 export type JwtSignPayload = {
-  id: string;
-  nama: string;
-  email: string;
-  role: string;
+  id: string
+  nama: string
+  email: string
+  role: string
+  id_universitas?: number
+  id_sekolah?: string
 }
 
 export class Jwt {
@@ -42,6 +44,8 @@ export class Jwt {
       nama: payload.nama,
       email: payload.nama,
       role: payload.role,
+      id_universitas: payload.id_universitas,
+      id_sekolah: payload.id_sekolah,
     };
   }
 }
