@@ -9,7 +9,10 @@ export const authenticationMiddleware = async (
     next: NextFunction,
 ) => {
   try {
-    const {access} = verifyAuthorizationCookie(req.cookies.Authorization);
+    const {access} = verifyAuthorizationCookie({
+      access: req.cookies.Authorization,
+      refresh: req.cookies.r,
+    });
     access.split('Bearer ')[1];
 
     const payload = await new Jwt().verifyAccessToken(access);
