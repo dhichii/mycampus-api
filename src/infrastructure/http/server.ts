@@ -7,6 +7,7 @@ import {sekolahRouter} from '../../Interface/http/api/sekolah/router';
 import {adminRouter} from '../../Interface/http/api/admin/router';
 import {authenticationRouter}
   from '../../Interface/http/api/authentication/router';
+import {akunRouter} from '../../Interface/http/api/akun/router';
 
 export const initServer = () => {
   const app = express();
@@ -24,6 +25,7 @@ export const initServer = () => {
       sekolahRouter(),
       adminRouter(),
       authenticationRouter(),
+      akunRouter(),
   );
   app.use(errorMiddleware);
 
