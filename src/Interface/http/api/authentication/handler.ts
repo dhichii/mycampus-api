@@ -21,8 +21,6 @@ export class AuthenticationHandler {
       });
 
       const data = await this.refreshAuthenticationUsecase.execute(refresh);
-      const accessPayload = await new Jwt()
-          .decode(data.access.split('Bearer ')[1]) as JwtPayload;
       const refreshPayload = await new Jwt()
           .decode(data.refresh.split('Bearer ')[1]) as JwtPayload;
 
@@ -32,7 +30,7 @@ export class AuthenticationHandler {
           {
             httpOnly: true,
             sameSite: 'strict',
-            maxAge: accessPayload.exp,
+            maxAge: refreshPayload.exp,
           },
       ).cookie(
           'r',
