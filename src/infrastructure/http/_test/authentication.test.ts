@@ -26,7 +26,8 @@ describe('api/v1/authentication endpoint', () => {
       const accessToken = await jwt.createAccessToken(payload);
       const refreshToken = await jwt.createRefreshToken(payload);
       // eslint-disable-next-line max-len
-      const authCookie = `j%3A%7B%22access%22%3A%22Bearer%20${accessToken}%22%2C%22refresh%22%3A%22Bearer%20${refreshToken}%22%7D`;
+      const authCookie = `Bearer%20${accessToken}`;
+      const rCookie = `Bearer%20${refreshToken}`;
 
       // add token
       const today = new Date();
@@ -38,16 +39,21 @@ describe('api/v1/authentication endpoint', () => {
 
       const response = await supertest(initServer())
           .put('/api/v1/authentication/refresh')
-          .set('Cookie', [`Authorization=${authCookie}`]);
+          .set('Cookie', [
+            `Authorization=${authCookie}`,
+            `r=${rCookie}`,
+          ]);
+
       const authCookieResponse = response.header['set-cookie'][0];
+      const rCookieResponse = response.header['set-cookie'][1];
 
       expect(response.status).toEqual(200);
       expect(authCookieResponse).toContain('Authorization');
-      expect(authCookieResponse).toContain('access');
-      expect(authCookieResponse).toContain('refresh');
-      expect(authCookieResponse).toContain('Max-Age');
       expect(authCookieResponse).toContain('HttpOnly');
       expect(authCookieResponse).toContain('SameSite=Strict');
+      expect(rCookieResponse).toContain('r');
+      expect(rCookieResponse).toContain('HttpOnly');
+      expect(rCookieResponse).toContain('SameSite=Strict');
     });
   });
 });
