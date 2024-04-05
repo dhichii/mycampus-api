@@ -15,15 +15,28 @@ export class AuthenticationHandler {
 
   async refresh(req: Request, res: Response, next: NextFunction) {
     try {
-      const {refresh} = verifyAuthorizationCookie(req.cookies.Authorization);
+      const {refresh} = verifyAuthorizationCookie({
+        access: req.cookies.Authorization,
+        refresh: req.cookies.r,
+      });
 
       const data = await this.refreshAuthenticationUsecase.execute(refresh);
+      const accessPayload = await new Jwt()
+          .decode(data.access.split('Bearer ')[1]) as JwtPayload;
       const refreshPayload = await new Jwt()
           .decode(data.refresh.split('Bearer ')[1]) as JwtPayload;
 
       res.cookie(
           'Authorization',
-          data,
+          data.access,
+          {
+            httpOnly: true,
+            sameSite: 'strict',
+            maxAge: accessPayload.exp,
+          },
+      ).cookie(
+          'r',
+          data.refresh,
           {
             httpOnly: true,
             sameSite: 'strict',
