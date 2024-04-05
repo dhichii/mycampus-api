@@ -42,7 +42,7 @@ export class Jwt {
     return {
       id: payload.id,
       nama: payload.nama,
-      email: payload.nama,
+      email: payload.email,
       role: payload.role,
       id_universitas: payload.id_universitas,
       id_sekolah: payload.id_sekolah,
