@@ -11,7 +11,7 @@ export class Bcrypt {
   async compare(password: string, hashedPassword: string) {
     const res = await bcrypt.compare(password, hashedPassword);
     if (!res) {
-      throw new ResponseError(404, 'email atau password salah');
+      throw new ResponseError(401, 'email atau password salah');
     }
   }
 }

@@ -16,7 +16,7 @@ describe('Bcrypt', () => {
       try {
         await new Bcrypt().compare('x', 'xx');
       } catch (e: any) {
-        expect(e.status).toEqual(404);
+        expect(e.status).toEqual(401);
         expect(e.message).toEqual('email atau password salah');
       }
     });
