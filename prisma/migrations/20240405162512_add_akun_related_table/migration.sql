@@ -79,10 +79,10 @@ CREATE TABLE "pihak_sekolah" (
 CREATE UNIQUE INDEX "akun_email_key" ON "akun"("email");
 
 -- AddForeignKey
-ALTER TABLE "admin" ADD CONSTRAINT "admin_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin" ADD CONSTRAINT "admin_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "operator" ADD CONSTRAINT "operator_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "operator" ADD CONSTRAINT "operator_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "operator" ADD CONSTRAINT "operator_id_universitas_fkey" FOREIGN KEY ("id_universitas") REFERENCES "universitas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -91,10 +91,10 @@ ALTER TABLE "operator" ADD CONSTRAINT "operator_id_universitas_fkey" FOREIGN KEY
 ALTER TABLE "pendaftar" ADD CONSTRAINT "pendaftar_id_sekolah_fkey" FOREIGN KEY ("id_sekolah") REFERENCES "sekolah"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "pendaftar" ADD CONSTRAINT "pendaftar_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "pendaftar" ADD CONSTRAINT "pendaftar_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "pihak_sekolah" ADD CONSTRAINT "pihak_sekolah_id_sekolah_fkey" FOREIGN KEY ("id_sekolah") REFERENCES "sekolah"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "pihak_sekolah" ADD CONSTRAINT "pihak_sekolah_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "pihak_sekolah" ADD CONSTRAINT "pihak_sekolah_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE CASCADE ON UPDATE CASCADE;
