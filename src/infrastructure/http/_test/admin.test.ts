@@ -7,7 +7,6 @@ import {Role} from '../../../util/enum';
 
 describe('api/v1/admin endpoint', () => {
   afterEach(async () => {
-    await AdminTestHelper.clean();
     await AkunTestHelper.clean();
   });
 
