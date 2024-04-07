@@ -108,3 +108,80 @@ Response Body (Failed):
   ]
 }
 ```
+
+## Register Pendaftar
+Endpoint: PATCH /api/v1/akun/register/pendaftar\
+Login: required
+
+Request Type: application/json
+
+Request Body:
+```json
+{
+  "nama": "example",
+  "nik": 3400000001924671,
+  "nisn": "5672832432",
+  "jenis_kelamin": "L" or "P",
+  "alamat": "jl example",
+  "asal_daerah": "Kec. X JAKARTA BARAT",
+  "no_hp": "0821626724",
+  "no_wa": "0821626724",
+  "asal_sekolah": "SMA NEGERI 1 X"
+}
+```
+
+Response Body (Success):
+```json
+{
+  "status": "success"
+}
+```
+
+Response Body (Failed):
+```json
+{
+  "errors": [
+    {
+      "message": "Internal Server Error"
+    }
+  ]
+}
+```
+
+## Register Pihak Sekolah
+Endpoint: PATCH /api/v1/akun/register/sekolah\
+Login: required
+
+Request Type: application/json
+
+Request Body:
+```json
+{
+  "nama": "example",
+  "jabatan": "KEPALA SEKOLAH",
+  "jenis_kelamin": "L" or "P",
+  "alamat": "jl example",
+  "asal_daerah": "Kec. X JAKARTA BARAT",
+  "no_hp": "0821626724",
+  "no_wa": "0821626724",
+  "asal_sekolah": "SMA NEGERI 1 X"
+}
+```
+
+Response Body (Success):
+```json
+{
+  "status": "success"
+}
+```
+
+Response Body (Failed):
+```json
+{
+  "errors": [
+    {
+      "message": "Internal Server Error"
+    }
+  ]
+}
+```
