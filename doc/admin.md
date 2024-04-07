@@ -91,9 +91,7 @@ Response Body (Failed):
 Endpoint: GET /api/v1/admin/{id}\
 Login: required
 
-Request Type: application/json
-
-Request Body:
+Response Body (Success):
 ```json
 {
   "status": "success",
@@ -104,13 +102,6 @@ Request Body:
     "jenis_kelamin": "P",
     "created_at": "2024-04-07T06:53:09.538Z"
   }
-}
-```
-
-Response Body (Success):
-```json
-{
-  "status": "success"
 }
 ```
 
