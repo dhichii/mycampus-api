@@ -35,7 +35,7 @@ Response Body (Failed):
 ```
 
 ## GET All Admin
-Endpoint: POST /api/v1/admin\
+Endpoint: GET /api/v1/admin\
 Login: required
 
 Query Param:
