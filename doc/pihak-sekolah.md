@@ -43,6 +43,7 @@ Response Body (Success):
         "id": "e6314752-c753-47dc-bc82-eae480d1b094",
         "nama": "EXAMPLE 2",
         "email": "example2@gmail.com",
+        "jabatan": "KEPALA SEKOLAH",
         "jenis_kelamin": "P",
         "created_at": "2024-04-07T06:53:09.538Z",
         "asal_sekolah": {
@@ -69,9 +70,7 @@ Response Body (Failed):
 Endpoint: GET /api/v1/pihak-sekolah/{id}\
 Login: required
 
-Request Type: application/json
-
-Request Body:
+Response Body (Success):
 ```json
 {
   "status": "success",
@@ -87,13 +86,6 @@ Request Body:
       "nama": "SEKOLAH EXAMPLE 1"
     }
   }
-}
-```
-
-Response Body (Success):
-```json
-{
-  "status": "success"
 }
 ```
 
