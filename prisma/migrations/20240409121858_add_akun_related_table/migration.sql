@@ -51,7 +51,7 @@ CREATE TABLE "pendaftar" (
     "id_sekolah" VARCHAR(255) NOT NULL,
     "nama" VARCHAR(120) NOT NULL,
     "nisn" VARCHAR(50) NOT NULL,
-    "nik" INTEGER NOT NULL,
+    "nik" VARCHAR(20) NOT NULL,
     "jenis_kelamin" "Jenis_Kelamin" NOT NULL,
     "kewarganegaraan" VARCHAR(50) NOT NULL,
     "tempat_lahir" VARCHAR(255) NOT NULL,

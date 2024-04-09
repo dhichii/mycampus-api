@@ -40,7 +40,7 @@ Response Body (Success):
         "id": "e6314752-c753-47dc-bc82-eae480d1b094",
         "nama": "EXAMPLE 1",
         "nisn": "0879780",
-        "nik": 2674267282,
+        "nik": "2674267282",
         "email": "example1@gmail.com",
         "jenis_kelamin": "L",
         "created_at": "2024-04-07T06:53:09.538Z",
@@ -53,7 +53,7 @@ Response Body (Success):
         "id": "e6314752-c753-47dc-bc82-eae480d1b094",
         "nama": "EXAMPLE 2",
         "nisn": "0879780",
-        "nik": 2674267282,
+        "nik": "2674267282",
         "email": "example2@gmail.com",
         "jenis_kelamin": "P",
         "created_at": "2024-04-07T06:53:09.538Z",
@@ -89,7 +89,7 @@ Response Body (Success):
     "id": "e6314752-c753-47dc-bc82-eae480d1b094",
     "nama": "EXAMPLE 1",
     "nisn": "0879780",
-    "nik": 2674267282,
+    "nik": "2674267282",
     "email": "example1@gmail.com",
     "jenis_kelamin": "L",
     "kewarganegaraan": "INDONESIA",
@@ -102,8 +102,8 @@ Response Body (Success):
     "kelurahan": "x",
     "kecamatan": "x",
     "provinsi": "Jakarta Barat",
-    "no_hp": "097796",
-    "no_wa": "0823423",
+    "no_hp": "+97796",
+    "no_wa": "+823423",
     "created_at": "2024-04-07T06:53:09.538Z",
     "asal_sekolah": {
       "id": "e6314752-c753-47dc-bc82-eae480d1b094",
@@ -135,7 +135,7 @@ Request Body:
 {
   "nama": "example",
   "nisn": "0879780",
-  "nik": 2674267282,
+  "nik": "2674267282",
   "jenis_kelamin": "L" or "P",
   "kewarganegaraan": "INDONESIA",
   "tempat_lahir": "JAKARTA",
@@ -148,8 +148,8 @@ Request Body:
   "kecamatan": "x",
   "provinsi": "Jakarta Barat",
   "asal_sekolah": "SEKOLAH EXAMPLE X",
-  "no_hp": "097796",
-  "no_wa": "0823423",
+  "no_hp": "+97796",
+  "no_wa": "+823423",
 }
 ```
 

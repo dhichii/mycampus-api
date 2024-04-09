@@ -88,7 +88,7 @@ model Pendaftar {
   id_sekolah String @db.VarChar(255)
   nama String @db.VarChar(120)
   nisn String @unique @db.VarChar(50)
-  nik Int @unique
+  nik String @unique @db.VarChar(20)
   jenis_kelamin Jenis_Kelamin
   kewarganegaraan String @db.VarChar(50)
   tempat_lahir String @db.VarChar(255)

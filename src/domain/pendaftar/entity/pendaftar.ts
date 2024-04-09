@@ -1,7 +1,7 @@
 export type AddPendaftarReq = {
   nama: string
   nisn: string
-  nik: number
+  nik: string
   email: string
   password: string
   jenis_kelamin: string
@@ -24,7 +24,7 @@ export type AddPendaftarInput = {
   id: string
   nama: string
   nisn: string
-  nik: number
+  nik: string
   jenis_kelamin: string
   id_sekolah: string
   kewarganegaraan: string
@@ -46,7 +46,7 @@ export type GetAllPendaftarInput = {
   limit: number
   page: number
   sekolah?: string
-  nik?: number
+  nik?: string
   nisn?: string
 }
 
@@ -54,7 +54,7 @@ export type GetPendaftarOutput = {
   id: string
   nama: string
   nisn: string
-  nik: number
+  nik: string
   email: string
   jenis_kelamin: string
   created_at: Date
@@ -68,7 +68,7 @@ export type GetPendaftarByIdOutput = {
   id: string
   nama: string
   nisn: string
-  nik: number
+  nik: string
   email: string
   jenis_kelamin: string
   kewarganegaraan: string
@@ -94,7 +94,7 @@ export type EditPendaftarReq = {
   id: string
   nama: string
   nisn: string
-  nik: number
+  nik: string
   jenis_kelamin: string
   asal_sekolah: string
   kewarganegaraan: string
@@ -114,7 +114,7 @@ export type EditPendaftarReq = {
 export type EditPendaftarInput = {
   nama: string
   nisn: string
-  nik: number
+  nik: string
   jenis_kelamin: string
   id_sekolah: string
   kewarganegaraan: string
