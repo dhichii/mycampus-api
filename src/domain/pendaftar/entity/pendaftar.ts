@@ -5,6 +5,7 @@ export type AddPendaftarReq = {
   email: string
   password: string
   jenis_kelamin: string
+  id_sekolah: string
   asal_sekolah: string
   kewarganegaraan: string
   tempat_lahir: string
@@ -52,6 +53,7 @@ export type GetAllPendaftarInput = {
 
 export type GetPendaftarOutput = {
   id: string
+  id_sekolah: string
   nama: string
   nisn: string
   nik: string
@@ -66,6 +68,7 @@ export type GetPendaftarOutput = {
 
 export type GetPendaftarByIdOutput = {
   id: string
+  id_sekolah: string
   nama: string
   nisn: string
   nik: string
@@ -96,6 +99,7 @@ export type EditPendaftarReq = {
   nisn: string
   nik: string
   jenis_kelamin: string
+  id_sekolah: string
   asal_sekolah: string
   kewarganegaraan: string
   tempat_lahir: string
@@ -134,11 +138,10 @@ export type EditPendaftarInput = {
 export function mapAddPendaftarReq(
     req: AddPendaftarReq,
     id: string,
-    idSekolah: string,
 ): AddPendaftarInput {
   return {
     id,
-    id_sekolah: idSekolah,
+    id_sekolah: req.id_sekolah,
     nama: req.nama.toUpperCase(),
     nisn: req.nisn,
     nik: req.nik,
@@ -158,12 +161,9 @@ export function mapAddPendaftarReq(
   };
 }
 
-export function mapEditPendaftarReq(
-    req: EditPendaftarReq,
-    idSekolah: string,
-): EditPendaftarInput {
+export function mapEditPendaftarReq(req: EditPendaftarReq): EditPendaftarInput {
   return {
-    id_sekolah: idSekolah,
+    id_sekolah: req.id_sekolah,
     nama: req.nama.toUpperCase(),
     nisn: req.nisn,
     nik: req.nik,

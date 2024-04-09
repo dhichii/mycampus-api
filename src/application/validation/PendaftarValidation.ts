@@ -11,6 +11,7 @@ export class PendaftarValidation {
     email: z.string().email().max(120),
     password: z.string().min(8).max(255),
     jenis_kelamin: z.enum(['L', 'P']),
+    id_sekolah: z.string(),
     asal_sekolah: z.string().min(10).max(255),
     kewarganegaraan: z.string().max(50),
     tempat_lahir: z.string().max(255),
@@ -51,6 +52,7 @@ export class PendaftarValidation {
         .min(16)
         .max(20),
     jenis_kelamin: z.enum(['L', 'P']),
+    id_sekolah: z.string(),
     asal_sekolah: z.string().min(10).max(255),
     kewarganegaraan: z.string().max(50),
     tempat_lahir: z.string().max(255),
