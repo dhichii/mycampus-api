@@ -22,7 +22,7 @@ export type GetAdminOutput = {
   nama: string
   email: string
   jenis_kelamin: string
-  created_at: string
+  created_at: Date
 }
 
 export type EditAdminReq = {
