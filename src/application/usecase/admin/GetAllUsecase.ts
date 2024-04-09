@@ -29,11 +29,23 @@ export class GetAllAdminUsecase {
       return {
         id: admin.id,
         nama: admin.nama,
-        email: akun.filter((akun) => akun.id === admin.id)[0].id,
+        email: function() {
+          for (let i = 0; i < akun.length; i++) {
+            if (admin.id == akun[i].id) {
+              const email = akun[i].email;
+              // remove the used element array
+              // to minimize the next loops
+              akun.splice(i, 1);
+
+              return email;
+            }
+          }
+        }() as string,
+        // akun.filter((akun) => akun.id === admin.id)[0].id,
         jenis_kelamin: admin.jenis_kelamin,
-        created_at: admin.created_at.toLocaleString(),
+        created_at: admin.created_at,
       };
-    }) as GetAdminOutput[];
+    });
 
     return new Pagination({limit, page, totalResult, data});
   }

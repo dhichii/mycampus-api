@@ -17,9 +17,6 @@ export class GetAdminByIdUsecase {
     const {email} = await this.akunRepo.getById(id);
     const {nama, jenis_kelamin, created_at} = await this.adminRepo.getById(id);
 
-    return {
-      id, nama, email, jenis_kelamin,
-      created_at: created_at.toLocaleString(),
-    } as GetAdminOutput;
+    return {id, nama, email, jenis_kelamin, created_at} as GetAdminOutput;
   }
 }
