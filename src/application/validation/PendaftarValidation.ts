@@ -1,12 +1,12 @@
 import {ZodType, z} from 'zod';
-import {DATE_REGEX} from '../../util/regex';
+import {DATE_REGEX, NUMBER_REGEX, PHONE_REGEX} from '../../util/regex';
 
 export class PendaftarValidation {
   static readonly ADD: ZodType = z.object({
     nama: z.string().max(255),
-    nisn: z.string().regex(/^[0-9]+$/, 'nisn harus berupa angka'),
+    nisn: z.string().regex(NUMBER_REGEX, 'nisn harus berupa angka'),
     nik: z.string()
-        .regex(/^[0-9]+$/, 'nik harus berupa angka')
+        .regex(NUMBER_REGEX, 'nik harus berupa angka')
         .min(16)
         .max(20),
     email: z.string().email().max(120),
@@ -27,17 +27,17 @@ export class PendaftarValidation {
       'NONE',
     ]),
     alamat_jalan: z.string().max(255),
-    rt: z.string().regex(/^[0-9]+$/, 'rt harus berupa angka').max(4),
-    rw: z.string().regex(/^[0-9]+$/, 'rw harus berupa angka').max(4),
+    rt: z.string().regex(NUMBER_REGEX, 'rt harus berupa angka').max(4),
+    rw: z.string().regex(NUMBER_REGEX, 'rw harus berupa angka').max(4),
     kelurahan: z.string().max(100),
     kecamatan: z.string().max(100),
     provinsi: z.string().max(100),
     no_hp: z.string()
-        .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+        .regex(PHONE_REGEX, 'nomor tidak valid')
         .max(20),
     no_wa: z.optional(
         z.string()
-            .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+            .regex(PHONE_REGEX, 'nomor tidak valid')
             .max(20),
     ),
   });
@@ -49,9 +49,9 @@ export class PendaftarValidation {
   static readonly EDIT_BY_ID: ZodType = z.object({
     id: z.string().uuid(),
     nama: z.string().max(255),
-    nisn: z.string().regex(/^[0-9]+$/, 'nisn harus berupa angka'),
+    nisn: z.string().regex(NUMBER_REGEX, 'nisn harus berupa angka'),
     nik: z.string()
-        .regex(/^[0-9]+$/, 'nik harus berupa angka')
+        .regex(NUMBER_REGEX, 'nik harus berupa angka')
         .min(16)
         .max(20),
     jenis_kelamin: z.enum(['L', 'P']),
@@ -70,17 +70,17 @@ export class PendaftarValidation {
       'NONE',
     ]),
     alamat_jalan: z.string().max(255),
-    rt: z.string().regex(/^[0-9]+$/, 'rt harus berupa angka').max(4),
-    rw: z.string().regex(/^[0-9]+$/, 'rw harus berupa angka').max(4),
+    rt: z.string().regex(NUMBER_REGEX, 'rt harus berupa angka').max(4),
+    rw: z.string().regex(NUMBER_REGEX, 'rw harus berupa angka').max(4),
     kelurahan: z.string().max(100),
     kecamatan: z.string().max(100),
     provinsi: z.string().max(100),
     no_hp: z.string()
-        .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+        .regex(PHONE_REGEX, 'nomor tidak valid')
         .max(20),
     no_wa: z.optional(
         z.string()
-            .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+            .regex(PHONE_REGEX, 'nomor tidak valid')
             .max(20),
     ),
   });
