@@ -44,7 +44,7 @@ export class SekolahRepositoryImpl implements SekolahRepository {
   }
 
   async getById(id: string): Promise<Sekolah> {
-    const data = await this.db.findUnique({where: {id}});
+    const data = await this.db.sekolah.findUnique({where: {id}});
     if (!data) {
       throw new ResponseError(404, 'sekolah not found');
     }
