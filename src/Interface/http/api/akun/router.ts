@@ -32,6 +32,8 @@ import {AddSekolahUsecase}
 import {SekolahRepositoryImpl}
   from '../../../../infrastructure/repository/SekolahRepositoryImpl';
 import {AddAkunUsecase} from '../../../../application/usecase/akun/AddUsecase';
+import {GetPendaftarByIdUsecase}
+  from '../../../../application/usecase/pendaftar/GetById';
 
 export function akunRouter() {
   // eslint-disable-next-line new-cap
@@ -46,11 +48,17 @@ export function akunRouter() {
 
   // usecase
   const getAdminByIdUsecase = new GetAdminByIdUsecase(adminRepo, akunRepo);
+  const getPendaftarByIdUsecase = new GetPendaftarByIdUsecase(
+      pendaftarRepo,
+      akunRepo,
+      sekolahRepo,
+  );
   const addAuthenticationUsecase =
     new AddAuthenticationUsecase(authenticationRepo);
   const loginUsecase = new LoginUsecase(
       akunRepo,
       getAdminByIdUsecase,
+      getPendaftarByIdUsecase,
       addAuthenticationUsecase,
   );
   const deleteAuthenticationUsecase =
