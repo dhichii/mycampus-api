@@ -34,9 +34,10 @@ export class PendaftarValidation {
     no_hp: z.string()
         .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
         .max(20),
-    no_wa: z.string()
-        .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
-        .max(20),
+    no_wa: z.optional(
+        z.string()
+            .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+            .max(20)),
   });
 
   static readonly GET_BY_ID: ZodType = z.object({
@@ -75,9 +76,11 @@ export class PendaftarValidation {
     no_hp: z.string()
         .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
         .max(20),
-    no_wa: z.string()
-        .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
-        .max(20),
+    no_wa: z.optional(
+        z.string()
+            .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
+            .max(20),
+    ),
   });
 
   static readonly DELETE_BY_ID: ZodType = z.object({
