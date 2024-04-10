@@ -1,4 +1,5 @@
 import {ZodType, z} from 'zod';
+import {DATE_REGEX} from '../../util/regex';
 
 export class PendaftarValidation {
   static readonly ADD: ZodType = z.object({
@@ -15,7 +16,7 @@ export class PendaftarValidation {
     asal_sekolah: z.string().min(10).max(255),
     kewarganegaraan: z.string().max(50),
     tempat_lahir: z.string().max(255),
-    tanggal_lahir: z.string().datetime(),
+    tanggal_lahir: z.string().regex(DATE_REGEX, 'format tanggal tidak sesuai'),
     agama: z.enum([
       'ISLAM',
       'KRISTEN',
@@ -37,7 +38,8 @@ export class PendaftarValidation {
     no_wa: z.optional(
         z.string()
             .regex(/^\+?[1-9][0-9]{7,14}$/, 'nomor tidak valid')
-            .max(20)),
+            .max(20),
+    ),
   });
 
   static readonly GET_BY_ID: ZodType = z.object({
@@ -57,7 +59,7 @@ export class PendaftarValidation {
     asal_sekolah: z.string().min(10).max(255),
     kewarganegaraan: z.string().max(50),
     tempat_lahir: z.string().max(255),
-    tanggal_lahir: z.string().datetime(),
+    tanggal_lahir: z.string().regex(DATE_REGEX, 'format tanggal tidak sesuai'),
     agama: z.enum([
       'ISLAM',
       'KRISTEN',
