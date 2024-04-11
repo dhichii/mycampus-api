@@ -22,14 +22,20 @@ export class GetAlloperatorUsecase {
     const [totalResult, operator] = await this.operatorRepo
         .getAll({search, limit, page});
 
-    // map ids
-    const ids = operator.map((data) => data.id);
+    // map ids and id_universitas
+    const ids: string[] = [];
+    const universitasIds: number[] = [];
+
+    for (let i = 0; i < operator.length; i++) {
+      ids.push(operator[i].id);
+      universitasIds.push(operator[i].id_universitas);
+    }
 
     // get all akun by ids
     const akun = await this.akunRepo.getAllByIds(ids);
 
     // get all universitas by ids
-    const universitas = await this.universitasRepo.getAllByIds(ids);
+    const universitas = await this.universitasRepo.getAllByIds(universitasIds);
 
     const data = operator.map((operator) => {
       return {
