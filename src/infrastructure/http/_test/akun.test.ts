@@ -6,6 +6,10 @@ import {AuthenticationTestHelper}
   from '../../../../test/AuthenticationTestHelper';
 import {Jwt, JwtSignPayload} from '../../security/Jwt';
 import {JwtPayload} from 'jsonwebtoken';
+import {v4 as uuid} from 'uuid';
+import {Role} from '../../../util/enum';
+import {Agama} from '@prisma/client';
+import {SekolahTestHelper} from '../../../../test/SekolahTestHelper';
 
 describe('api/v1/akun endpoint', () => {
   afterEach(async () => {
@@ -296,6 +300,67 @@ describe('api/v1/akun endpoint', () => {
 
       expect(response.status).toEqual(200);
       expect(akun?.password).not.toEqual(updatedAkun?.password);
+    });
+  });
+
+  describe('when POST /akun/register/pendaftar', () => {
+    const sekolahData = {
+      id: uuid(),
+      nama: 'SMA NEGERI 1 EXAMPLE',
+    };
+    const id = uuid();
+    const akunDatas = [
+      {
+        id,
+        email: 'example1@gmail.com',
+        // eslint-disable-next-line max-len
+        password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
+        role: Role.PENDAFTAR as 'ADMIN',
+      },
+    ];
+    const pendaftarData = {
+      id,
+      id_sekolah: sekolahData.id,
+      email: akunDatas[0].email,
+      password: akunDatas[0].password,
+      nama: 'EXAMPLE 1',
+      nisn: '3981981298981311',
+      nik: '3981981298981311',
+      jenis_kelamin: 'L',
+      kewarganegaraan: 'asdjasdj',
+      tempat_lahir: 'asddas',
+      tanggal_lahir: new Date(),
+      agama: Agama.NONE,
+      alamat_jalan: 'sdfsf',
+      rt: '21',
+      rw: '32',
+      kelurahan: 'x',
+      kecamatan: 'y',
+      provinsi: 'z',
+      no_hp: '+977962198',
+      no_wa: '+977962198',
+    };
+
+    it('should return 400 when request invalid', async () => {
+      const response = await supertest(initServer())
+          .post('/api/v1/akun/register/pendaftar');
+
+      expect(response.status).toEqual(400);
+    });
+
+    it('should register pendaftar successfully', async () => {
+      await SekolahTestHelper.add([sekolahData]);
+
+      const response = await supertest(initServer())
+          .post('/api/v1/akun/register/pendaftar')
+          .send(pendaftarData);
+
+
+      expect(response.status).toEqual(201);
+      expect(response.body.status).toEqual('success');
+
+      await AkunTestHelper.clean();
+      await SekolahTestHelper.clean();
     });
   });
 });
