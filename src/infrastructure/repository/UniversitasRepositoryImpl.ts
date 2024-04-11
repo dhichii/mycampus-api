@@ -21,7 +21,7 @@ export class UniversitasRepositoryImpl implements UniversitasRepository {
     return result;
   }
 
-  async getAllByIds(ids: string[]): Promise<Universitas[]> {
+  async getAllByIds(ids: number[]): Promise<Universitas[]> {
     return await this.db.universitas.findMany({
       where: {
         id: {in: ids},
