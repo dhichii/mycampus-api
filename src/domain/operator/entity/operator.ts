@@ -58,7 +58,7 @@ export function mapAddOperatorReq(
   };
 }
 
-export function mapEditAdminReq(req: EditOperatorReq): EditOperatorInput {
+export function mapEditOperatorReq(req: EditOperatorReq): EditOperatorInput {
   return {
     nama: req.nama.toUpperCase(),
     jenis_kelamin: req.jenis_kelamin,
