@@ -4,16 +4,50 @@ import {AdminTestHelper} from '../../../../test/AdminTestHelper';
 import {initServer} from '../server';
 import {v4 as uuid} from 'uuid';
 import {Role} from '../../../util/enum';
+import {Jwt, JwtSignPayload} from '../../security/Jwt';
 
 describe('api/v1/admin endpoint', () => {
+  // admin data
+  const adminPayload = {
+    id: uuid(),
+    role: Role.ADMIN,
+  };
+
+  // token data
+  const jwt = new Jwt();
+  const signPayload = jwt.mapJwtSignPayload(
+    {...adminPayload} as JwtSignPayload,
+  );
+  let accessToken = '';
+  let refreshToken = '';
+
+  beforeAll(async () => {
+    accessToken = await jwt.createAccessToken(signPayload);
+    refreshToken = await jwt.createRefreshToken(signPayload);
+  });
+
   afterEach(async () => {
     await AkunTestHelper.clean();
   });
 
   describe('when POST /admin', () => {
-    it('should return 400 when request invalid', async () => {
+    it('should return 401 when credentials invalid', async () => {
       const response = await supertest(initServer())
           .post('/api/v1/admin');
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(401);
+      expect(errors[0].message)
+          .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 400 when request invalid', async () => {
+      const response = await supertest(initServer())
+          .post('/api/v1/admin')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       const errors = response.body.errors;
       expect(response.status).toEqual(400);
@@ -37,6 +71,10 @@ describe('api/v1/admin endpoint', () => {
       }]);
       const response = await supertest(initServer())
           .post('/api/v1/admin')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ])
           .send(req);
 
       expect(response.status).toEqual(400);
@@ -53,6 +91,10 @@ describe('api/v1/admin endpoint', () => {
 
       const response = await supertest(initServer())
           .post('/api/v1/admin')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ])
           .send(req);
 
       const admin = await AdminTestHelper.findById(response.body.data.id);
@@ -68,6 +110,16 @@ describe('api/v1/admin endpoint', () => {
   });
 
   describe('when GET /admin', () => {
+    it('should return 401 when credentials invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/admin');
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(401);
+      expect(errors[0].message)
+          .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
     it('should return all admin', async () => {
       const adminDatas = [
         {
@@ -106,7 +158,11 @@ describe('api/v1/admin endpoint', () => {
       }));
 
       const response = await supertest(initServer())
-          .get('/api/v1/admin');
+          .get('/api/v1/admin')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       const body = response.body;
       expect(response.status).toEqual(200);
@@ -123,7 +179,11 @@ describe('api/v1/admin endpoint', () => {
           await AdminTestHelper.add();
 
           const response = await supertest(initServer())
-              .get('/api/v1/admin?search=x');
+              .get('/api/v1/admin?search=x')
+              .set('Cookie', [
+                `Authorization=Bearer%20${accessToken}`,
+                `r=Bearer%20${refreshToken}`,
+              ]);
 
           expect(response.status).toEqual(200);
           expect(response.body.data.length).toEqual(0);
@@ -135,7 +195,11 @@ describe('api/v1/admin endpoint', () => {
       await AdminTestHelper.add();
 
       const response = await supertest(initServer())
-          .get('/api/v1/admin?search=tes');
+          .get('/api/v1/admin?search=tes')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       expect(response.status).toEqual(200);
       expect(response.body.data.length).toEqual(1);
@@ -143,9 +207,24 @@ describe('api/v1/admin endpoint', () => {
   });
 
   describe('when GET /admin/{id}', () => {
-    it('should return 400 when id is invalid', async () => {
+    it('should return 401 when credentials invalid', async () => {
       const response = await supertest(initServer())
           .get('/api/v1/admin/s');
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(401);
+      expect(errors[0].message)
+          .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 400 when id is invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/admin/s')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
+
       expect(response.status).toEqual(400);
       expect(response.body.errors[0].path[0]).toEqual('id');
     });
@@ -154,7 +233,11 @@ describe('api/v1/admin endpoint', () => {
       const id = uuid();
 
       const response = await supertest(initServer())
-          .get(`/api/v1/admin/${id}`);
+          .get(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       expect(response.status).toEqual(404);
       expect(response.body.errors[0].message).toEqual('akun tidak ditemukan');
@@ -177,7 +260,11 @@ describe('api/v1/admin endpoint', () => {
       }]);
 
       const response = await supertest(initServer())
-          .get(`/api/v1/admin/${id}`);
+          .get(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       const data = response.body.data;
       expect(response.status).toEqual(200);
@@ -190,9 +277,24 @@ describe('api/v1/admin endpoint', () => {
   });
 
   describe('when PUT /admin/{id}', () => {
-    it('should return 400 when id is invalid', async () => {
+    it('should return 401 when credentials invalid', async () => {
       const response = await supertest(initServer())
           .put('/api/v1/admin/s');
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(401);
+      expect(errors[0].message)
+          .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 400 when id is invalid', async () => {
+      const response = await supertest(initServer())
+          .put('/api/v1/admin/s')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
+
       expect(response.status).toEqual(400);
       expect(response.body.errors[0].path[0]).toEqual('id');
     });
@@ -200,7 +302,11 @@ describe('api/v1/admin endpoint', () => {
     it('should return 400 when request invalid', async () => {
       const id = uuid();
       const response = await supertest(initServer())
-          .put(`/api/v1/admin/${id}`);
+          .put(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       expect(response.status).toEqual(400);
       expect(response.body.errors[0].path[0]).toEqual('nama');
@@ -210,6 +316,10 @@ describe('api/v1/admin endpoint', () => {
       const id = uuid();
       const response = await supertest(initServer())
           .put(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ])
           .send({
             nama: 'example',
             jenis_kelamin: 'L',
@@ -245,6 +355,10 @@ describe('api/v1/admin endpoint', () => {
 
       const response = await supertest(initServer())
           .put(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ])
           .send({nama: newNama, jenis_kelamin: req.jenis_kelamin});
 
       const data = await AdminTestHelper.findById(id);
@@ -255,9 +369,24 @@ describe('api/v1/admin endpoint', () => {
   });
 
   describe('when DELETE /admin/{id}', () => {
-    it('should return 400 when id is invalid', async () => {
+    it('should return 401 when credentials invalid', async () => {
       const response = await supertest(initServer())
           .delete('/api/v1/admin/s');
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(401);
+      expect(errors[0].message)
+          .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 400 when id is invalid', async () => {
+      const response = await supertest(initServer())
+          .delete('/api/v1/admin/s')
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
+
       expect(response.status).toEqual(400);
       expect(response.body.errors[0].path[0]).toEqual('id');
     });
@@ -265,7 +394,11 @@ describe('api/v1/admin endpoint', () => {
     it('should return 404 when not found', async () => {
       const id = uuid();
       const response = await supertest(initServer())
-          .delete(`/api/v1/admin/${id}`);
+          .delete(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       expect(response.status).toEqual(404);
       expect(response.body.errors[0].message).toEqual('akun tidak ditemukan');
@@ -295,7 +428,11 @@ describe('api/v1/admin endpoint', () => {
       }]);
 
       const response = await supertest(initServer())
-          .delete(`/api/v1/admin/${id}`);
+          .delete(`/api/v1/admin/${id}`)
+          .set('Cookie', [
+            `Authorization=Bearer%20${accessToken}`,
+            `r=Bearer%20${refreshToken}`,
+          ]);
 
       const akun = await AkunTestHelper.findById(id);
       const admin = await AdminTestHelper.findById(id);
