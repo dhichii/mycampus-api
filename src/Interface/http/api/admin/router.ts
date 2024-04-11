@@ -16,6 +16,9 @@ import {EditAdminByIdUsecase}
   from '../../../../application/usecase/admin/EditByIdUsecase';
 import {DeleteAdminByIdUsecase}
   from '../../../../application/usecase/admin/DeleteByIdUsecase';
+import {authenticationMiddleware} from '../../middleware/authentication';
+import {Role} from '../../../../util/enum';
+import {authorizationMiddleware} from '../../middleware/authorization';
 
 export function adminRouter() {
   // eslint-disable-next-line new-cap
@@ -45,12 +48,32 @@ export function adminRouter() {
 
   // routes
   router.route('/admin')
-      .post(handler.add)
-      .get(handler.getAll);
+      .post(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.add,
+      )
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getAll,
+      );
   router.route('/admin/:id')
-      .get(handler.getById)
-      .put(handler.editById)
-      .delete(handler.deleteById);
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getById,
+      )
+      .put(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.editById,
+      )
+      .delete(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.deleteById,
+      );
 
   return router;
 }

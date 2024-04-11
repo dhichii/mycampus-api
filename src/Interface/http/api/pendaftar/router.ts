@@ -16,6 +16,8 @@ import {DeletePendaftarByIdUsecase}
   from '../../../../application/usecase/pendaftar/DeleteByIdUsecase';
 import {PendaftarHandler} from './handler';
 import {authenticationMiddleware} from '../../middleware/authentication';
+import {authorizationMiddleware} from '../../middleware/authorization';
+import {Role} from '../../../../util/enum';
 
 export function pendaftarRouter() {
   // eslint-disable-next-line new-cap
@@ -51,13 +53,28 @@ export function pendaftarRouter() {
   );
 
   // routes
-  router.use(authenticationMiddleware);
   router.route('/pendaftar')
-      .get(handler.getAll);
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getAll,
+      );
   router.route('/pendaftar/:id')
-      .get(handler.getById)
-      .put(handler.editById)
-      .delete(handler.deleteById);
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getById,
+      )
+      .put(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.editById,
+      )
+      .delete(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.deleteById,
+      );
 
   return router;
 }

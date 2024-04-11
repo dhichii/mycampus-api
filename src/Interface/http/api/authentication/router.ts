@@ -7,6 +7,7 @@ import {prismaClient} from '../../../../infrastructure/database/prisma';
 import {AuthenticationHandler} from './handler';
 import {GetAuthenticationUsecase}
   from '../../../../application/usecase/authentication/GetUsecase';
+import {authenticationMiddleware} from '../../middleware/authentication';
 
 export function authenticationRouter() {
   // eslint-disable-next-line new-cap
@@ -26,7 +27,11 @@ export function authenticationRouter() {
   const handler = new AuthenticationHandler(refreshAuthenticationUsecase);
 
   // routes
-  router.route('/authentication/refresh').put(handler.refresh);
+  router.put(
+      '/authentication/refresh',
+      authenticationMiddleware,
+      handler.refresh,
+  );
 
   return router;
 }

@@ -18,6 +18,9 @@ import {EditOperatorByIdUsecase}
 import {DeleteOperatorByIdUsecase}
   from '../../../../application/usecase/operator/DeleteByIdUsecase';
 import {OperatorHandler} from './handler';
+import {authenticationMiddleware} from '../../middleware/authentication';
+import {authorizationMiddleware} from '../../middleware/authorization';
+import {Role} from '../../../../util/enum';
 
 export function operatorRouter() {
   // eslint-disable-next-line new-cap
@@ -60,12 +63,32 @@ export function operatorRouter() {
 
   // routes
   router.route('/operator')
-      .post(handler.add)
-      .get(handler.getAll);
+      .post(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.add,
+      )
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getAll,
+      );
   router.route('/operator/:id')
-      .get(handler.getById)
-      .put(handler.editById)
-      .delete(handler.deleteById);
+      .get(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.getById,
+      )
+      .put(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.editById,
+      )
+      .delete(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.deleteById,
+      );
 
   return router;
 }

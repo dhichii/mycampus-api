@@ -96,14 +96,17 @@ export function akunRouter() {
       addPendaftarUsecase,
   );
 
-  router.route('/akun/login').post(handler.login);
+  router.post('/akun/login', handler.login);
   router.post('/akun/register/pendaftar', handler.registerPendaftar);
 
   // route with login required
-  router.use(authenticationMiddleware);
-  router.post('/akun/logout', handler.logout);
-  router.patch('/akun/email', handler.changeEmail);
-  router.patch('/akun/password', handler.changePassword);
+  router.post('/akun/logout', authenticationMiddleware, handler.logout);
+  router.patch('/akun/email', authenticationMiddleware, handler.changeEmail);
+  router.patch(
+      '/akun/password',
+      authenticationMiddleware,
+      handler.changePassword,
+  );
 
   return router;
 }
