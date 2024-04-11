@@ -23,6 +23,17 @@ import {ChangeEmailUsecase}
   from '../../../../application/usecase/akun/ChangeEmailUsecase';
 import {ChangePasswordUsecase}
   from '../../../../application/usecase/akun/ChangePasswordUsecase';
+import {PendaftarRepositoryImpl}
+  from '../../../../infrastructure/repository/PendaftarRepositoryImpl';
+import {AddPendaftarUsecase}
+  from '../../../../application/usecase/pendaftar/AddUsecase';
+import {AddSekolahUsecase}
+  from '../../../../application/usecase/sekolah/AddUsecase';
+import {SekolahRepositoryImpl}
+  from '../../../../infrastructure/repository/SekolahRepositoryImpl';
+import {AddAkunUsecase} from '../../../../application/usecase/akun/AddUsecase';
+import {GetPendaftarByIdUsecase}
+  from '../../../../application/usecase/pendaftar/GetById';
 
 export function akunRouter() {
   // eslint-disable-next-line new-cap
@@ -31,15 +42,23 @@ export function akunRouter() {
   // repo
   const akunRepo = new AkunRepositoryImpl(prismaClient);
   const adminRepo = new AdminRepositoryImpl(prismaClient);
+  const pendaftarRepo = new PendaftarRepositoryImpl(prismaClient);
+  const sekolahRepo = new SekolahRepositoryImpl(prismaClient);
   const authenticationRepo = new AuthenticationRepositoryImpl(prismaClient);
 
   // usecase
   const getAdminByIdUsecase = new GetAdminByIdUsecase(adminRepo, akunRepo);
+  const getPendaftarByIdUsecase = new GetPendaftarByIdUsecase(
+      pendaftarRepo,
+      akunRepo,
+      sekolahRepo,
+  );
   const addAuthenticationUsecase =
     new AddAuthenticationUsecase(authenticationRepo);
   const loginUsecase = new LoginUsecase(
       akunRepo,
       getAdminByIdUsecase,
+      getPendaftarByIdUsecase,
       addAuthenticationUsecase,
   );
   const deleteAuthenticationUsecase =
@@ -47,15 +66,24 @@ export function akunRouter() {
   const logoutUsecase = new LogoutUsecase(deleteAuthenticationUsecase);
   const changeEmailUsecase = new ChangeEmailUsecase(akunRepo);
   const changePasswordUsecase = new ChangePasswordUsecase(akunRepo);
+  const addSekolahUsecase = new AddSekolahUsecase(sekolahRepo);
+  const addAkunUsecase = new AddAkunUsecase(akunRepo);
+  const addPendaftarUsecase = new AddPendaftarUsecase(
+      pendaftarRepo,
+      addSekolahUsecase,
+      addAkunUsecase,
+  );
 
   const handler = new AkunHandler(
       loginUsecase,
       logoutUsecase,
       changeEmailUsecase,
       changePasswordUsecase,
+      addPendaftarUsecase,
   );
 
   router.route('/akun/login').post(handler.login);
+  router.post('/akun/register/pendaftar', handler.registerPendaftar);
 
   // route with login required
   router.use(authenticationMiddleware);

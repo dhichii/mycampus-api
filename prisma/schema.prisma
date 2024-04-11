@@ -87,9 +87,19 @@ model Pendaftar {
   id String @id @db.VarChar(255)
   id_sekolah String @db.VarChar(255)
   nama String @db.VarChar(120)
+  nisn String @unique @db.VarChar(50)
+  nik String @unique @db.VarChar(20)
   jenis_kelamin Jenis_Kelamin
-  alamat String @db.VarChar(255)
-  asal_daerah String @db.VarChar(255)
+  kewarganegaraan String @db.VarChar(50)
+  tempat_lahir String @db.VarChar(255)
+  tanggal_lahir DateTime @db.Date
+  agama Agama
+  alamat_jalan String @db.VarChar(255)
+  rt String @db.VarChar(4)
+  rw String @db.VarChar(4)
+  kelurahan String @db.VarChar(100)
+  kecamatan String @db.VarChar(100)
+  provinsi String @db.VarChar(100)
   no_hp String @db.VarChar(20)
   no_wa String? @db.VarChar(20)
   created_at DateTime @default(now())
@@ -129,4 +139,14 @@ enum Role {
 enum Jenis_Kelamin {
   L
   P
+}
+
+enum Agama {
+  ISLAM
+  KRISTEN
+  KATOLIK
+  HINDU
+  BUDDHA
+  KONGHUCU
+  NONE
 }

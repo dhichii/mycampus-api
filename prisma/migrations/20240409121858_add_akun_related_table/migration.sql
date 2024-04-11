@@ -4,6 +4,9 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'OPERATOR', 'PENDAFTAR', 'SEKOLAH');
 -- CreateEnum
 CREATE TYPE "Jenis_Kelamin" AS ENUM ('L', 'P');
 
+-- CreateEnum
+CREATE TYPE "Agama" AS ENUM ('ISLAM', 'KRISTEN', 'KATOLIK', 'HINDU', 'BUDDHA', 'KONGHUCU', 'NONE');
+
 -- CreateTable
 CREATE TABLE "akun" (
     "id" VARCHAR(255) NOT NULL,
@@ -47,9 +50,19 @@ CREATE TABLE "pendaftar" (
     "id" VARCHAR(255) NOT NULL,
     "id_sekolah" VARCHAR(255) NOT NULL,
     "nama" VARCHAR(120) NOT NULL,
+    "nisn" VARCHAR(50) NOT NULL,
+    "nik" VARCHAR(20) NOT NULL,
     "jenis_kelamin" "Jenis_Kelamin" NOT NULL,
-    "alamat" VARCHAR(255) NOT NULL,
-    "asal_daerah" VARCHAR(255) NOT NULL,
+    "kewarganegaraan" VARCHAR(50) NOT NULL,
+    "tempat_lahir" VARCHAR(255) NOT NULL,
+    "tanggal_lahir" DATE NOT NULL,
+    "agama" "Agama" NOT NULL,
+    "alamat_jalan" VARCHAR(255) NOT NULL,
+    "rt" VARCHAR(4) NOT NULL,
+    "rw" VARCHAR(4) NOT NULL,
+    "kelurahan" VARCHAR(100) NOT NULL,
+    "kecamatan" VARCHAR(100) NOT NULL,
+    "provinsi" VARCHAR(100) NOT NULL,
     "no_hp" VARCHAR(20) NOT NULL,
     "no_wa" VARCHAR(20),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -77,6 +90,12 @@ CREATE TABLE "pihak_sekolah" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "akun_email_key" ON "akun"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "pendaftar_nisn_key" ON "pendaftar"("nisn");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "pendaftar_nik_key" ON "pendaftar"("nik");
 
 -- AddForeignKey
 ALTER TABLE "admin" ADD CONSTRAINT "admin_id_fkey" FOREIGN KEY ("id") REFERENCES "akun"("id") ON DELETE CASCADE ON UPDATE CASCADE;

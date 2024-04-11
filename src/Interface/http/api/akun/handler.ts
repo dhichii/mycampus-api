@@ -9,6 +9,8 @@ import {ChangeEmailUsecase}
   from '../../../../application/usecase/akun/ChangeEmailUsecase';
 import {ChangePasswordUsecase}
   from '../../../../application/usecase/akun/ChangePasswordUsecase';
+import {AddPendaftarUsecase}
+  from '../../../../application/usecase/pendaftar/AddUsecase';
 
 export class AkunHandler {
   constructor(
@@ -16,6 +18,7 @@ export class AkunHandler {
     private readonly logoutUsecase: LogoutUsecase,
     private readonly changeEmailUsecase: ChangeEmailUsecase,
     private readonly changePasswordUsecase: ChangePasswordUsecase,
+    private readonly addPendaftarUsecase: AddPendaftarUsecase,
   ) {
     autoBind(this);
   }
@@ -110,6 +113,16 @@ export class AkunHandler {
       await this.changePasswordUsecase.execute({id, password});
 
       res.json({status: 'success'});
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async registerPendaftar(req: Request, res: Response, next: NextFunction) {
+    try {
+      await this.addPendaftarUsecase.execute(req.body);
+
+      res.status(201).json({status: 'success'});
     } catch (e) {
       next(e);
     }

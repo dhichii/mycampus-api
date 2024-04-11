@@ -7,11 +7,13 @@ import {AkunValidation} from '../../validation/AkunValidation';
 import {Validation} from '../../validation/Validation';
 import {GetAdminByIdUsecase} from '../admin/GetByIdUsecase';
 import {AddAuthenticationUsecase} from '../authentication/AddUsecase';
+import {GetPendaftarByIdUsecase} from '../pendaftar/GetById';
 
 export class LoginUsecase {
   constructor(
     private readonly akunRepository: AkunRepository,
     private readonly getAdminByIdUsecase: GetAdminByIdUsecase,
+    private readonly getPendaftarByIdUsecase: GetPendaftarByIdUsecase,
     private readonly addAuthenticationUsecase: AddAuthenticationUsecase,
   ) {}
 
@@ -39,6 +41,15 @@ export class LoginUsecase {
           nama: admin.nama,
           email: admin.email,
           role,
+        });
+        break;
+      case Role.PENDAFTAR:
+        const pendaftar = await this.getPendaftarByIdUsecase.execute(id);
+        jwtSignPayload = jwt.mapJwtSignPayload({
+          id,
+          nama: pendaftar.nama,
+          email: pendaftar.email,
+          role: role,
         });
         break;
       default:
