@@ -34,6 +34,12 @@ import {SekolahRepositoryImpl}
 import {AddAkunUsecase} from '../../../../application/usecase/akun/AddUsecase';
 import {GetPendaftarByIdUsecase}
   from '../../../../application/usecase/pendaftar/GetById';
+import {GetOperatorByIdUsecase}
+  from '../../../../application/usecase/operator/GetByIdUsecase';
+import {OperatorRepositoryImpl}
+  from '../../../../infrastructure/repository/OperatorRepositoryImpl';
+import {UniversitasRepositoryImpl}
+  from '../../../../infrastructure/repository/UniversitasRepositoryImpl';
 
 export function akunRouter() {
   // eslint-disable-next-line new-cap
@@ -44,6 +50,8 @@ export function akunRouter() {
   const adminRepo = new AdminRepositoryImpl(prismaClient);
   const pendaftarRepo = new PendaftarRepositoryImpl(prismaClient);
   const sekolahRepo = new SekolahRepositoryImpl(prismaClient);
+  const operatorRepo = new OperatorRepositoryImpl(prismaClient);
+  const universitasRepo = new UniversitasRepositoryImpl(prismaClient);
   const authenticationRepo = new AuthenticationRepositoryImpl(prismaClient);
 
   // usecase
@@ -53,12 +61,18 @@ export function akunRouter() {
       akunRepo,
       sekolahRepo,
   );
+  const getOperatorByIdUsecase = new GetOperatorByIdUsecase(
+      operatorRepo,
+      akunRepo,
+      universitasRepo,
+  );
   const addAuthenticationUsecase =
     new AddAuthenticationUsecase(authenticationRepo);
   const loginUsecase = new LoginUsecase(
       akunRepo,
       getAdminByIdUsecase,
       getPendaftarByIdUsecase,
+      getOperatorByIdUsecase,
       addAuthenticationUsecase,
   );
   const deleteAuthenticationUsecase =
