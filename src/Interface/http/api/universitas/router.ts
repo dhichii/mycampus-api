@@ -18,6 +18,9 @@ import {EditLogoUniversitasByIdUsecase}
   from '../../../../application/usecase/universitas/EditLogoByIdUsecase';
 import {createMulterDiskStorage, createMulterFileFilter}
   from '../../../../util/multer';
+import {authenticationMiddleware} from '../../middleware/authentication';
+import {authorizationMiddleware} from '../../middleware/authorization';
+import {Role} from '../../../../util/enum';
 
 export function universitasRouter() {
   // eslint-disable-next-line new-cap
@@ -63,14 +66,33 @@ export function universitasRouter() {
 
   // routes
   router.route('/universitas')
-      .post(upload.single('logo'), handler.add)
-      .get(handler.getAll);
+      .post(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          upload.single('logo'),
+          handler.add,
+      )
+      .get(authenticationMiddleware, handler.getAll);
   router.route('/universitas/:id')
-      .get(handler.getById)
-      .put(upload.none(), handler.editById)
-      .delete(handler.deleteById);
-  router.route('/universitas/:id/logo')
-      .patch(upload.single('logo'), handler.editLogoById);
+      .get(authenticationMiddleware, handler.getById)
+      .put(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          upload.none(),
+          handler.editById,
+      )
+      .delete(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.deleteById,
+      );
+  router.patch(
+      '/universitas/:id/logo',
+      authenticationMiddleware,
+      authorizationMiddleware([Role.ADMIN]),
+      upload.single('logo'),
+      handler.editLogoById,
+  );
 
   return router;
 }
