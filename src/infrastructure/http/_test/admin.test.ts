@@ -34,6 +34,44 @@ describe('api/v1/admin endpoint', () => {
   let forbiddenAccessToken = '';
   let forbiddenRefreshToken = '';
 
+  const ids = [uuid(), uuid()];
+  const akunDatas = [
+    {
+      id: ids[0],
+      email: 'example1@gmail.com',
+      // eslint-disable-next-line max-len
+      password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
+      role: Role.ADMIN as 'ADMIN',
+    },
+    {
+      id: ids[1],
+      email: 'example2@gmail.com',
+      // eslint-disable-next-line max-len
+      password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
+      role: Role.ADMIN as 'ADMIN',
+    },
+  ];
+  const adminDatas = [
+    {
+      id: ids[0],
+      nama: 'Admin Example',
+      jenis_kelamin: 'L' as 'L',
+    },
+    {
+      id: ids[1],
+      nama: 'Admin Example',
+      jenis_kelamin: 'L' as 'L',
+    },
+  ];
+
+  const req = {
+    nama: 'Admin Example',
+    email: 'example1@gmail.com',
+    // eslint-disable-next-line max-len
+    password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
+    jenis_kelamin: 'L',
+  };
+
   beforeAll(async () => {
     accessToken = await jwt.createAccessToken(signPayload);
     refreshToken = await jwt.createRefreshToken(signPayload);
@@ -83,20 +121,7 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return 400 when email is already exist', async () => {
-      const req = {
-        nama: 'Admin Example',
-        email: 'example@gmail.com',
-        // eslint-disable-next-line max-len
-        password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-        jenis_kelamin: 'L',
-      };
-
-      await AkunTestHelper.add([{
-        id: uuid(),
-        email: req.email,
-        password: req.password,
-        role: Role.ADMIN,
-      }]);
+      await AkunTestHelper.add([akunDatas[0]]);
       const response = await supertest(initServer())
           .post('/api/v1/admin')
           .set('Cookie', [
@@ -110,13 +135,6 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should add admin successfully', async () => {
-      const req = {
-        nama: 'Admin Example',
-        email: 'example@gmail.com',
-        password: '12345678',
-        jenis_kelamin: 'L',
-      };
-
       const response = await supertest(initServer())
           .post('/api/v1/admin')
           .set('Cookie', [
@@ -162,41 +180,8 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return all admin', async () => {
-      const adminDatas = [
-        {
-          id: uuid(),
-          nama: 'Admin Example',
-          email: 'example1@gmail.com',
-          // eslint-disable-next-line max-len
-          password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-          jenis_kelamin: 'L' as 'L',
-          role: Role.ADMIN as 'ADMIN',
-        },
-        {
-          id: uuid(),
-          nama: 'Admin Example',
-          email: 'example2@gmail.com',
-          // eslint-disable-next-line max-len
-          password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-          jenis_kelamin: 'L' as 'L',
-          role: Role.ADMIN as 'ADMIN',
-        },
-      ];
-      await AkunTestHelper.add(adminDatas.map((data) => {
-        return {
-          id: data.id,
-          email: data.email,
-          password: data.password,
-          role: data.role,
-        };
-      }));
-      await AdminTestHelper.add(adminDatas.map((data) => {
-        return {
-          id: data.id,
-          nama: data.nama,
-          jenis_kelamin: data.jenis_kelamin,
-        };
-      }));
+      await AkunTestHelper.add(akunDatas);
+      await AdminTestHelper.add(adminDatas);
 
       const response = await supertest(initServer())
           .get('/api/v1/admin')
@@ -284,10 +269,8 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return 404 when not found', async () => {
-      const id = uuid();
-
       const response = await supertest(initServer())
-          .get(`/api/v1/admin/${id}`)
+          .get(`/api/v1/admin/${ids[0]}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
@@ -298,23 +281,11 @@ describe('api/v1/admin endpoint', () => {
     } );
 
     it('should return admin', async () => {
-      const id = uuid();
-
-      await AkunTestHelper.add([{
-        id: id,
-        email: 'example1@gmail.com',
-        // eslint-disable-next-line max-len
-        password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-        role: Role.ADMIN,
-      }]);
-      await AdminTestHelper.add([{
-        id: id,
-        nama: 'Admin Example',
-        jenis_kelamin: 'L',
-      }]);
+      await AkunTestHelper.add([akunDatas[0]]);
+      await AdminTestHelper.add([adminDatas[0]]);
 
       const response = await supertest(initServer())
-          .get(`/api/v1/admin/${id}`)
+          .get(`/api/v1/admin/${adminDatas[0].id}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
@@ -367,9 +338,8 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return 400 when request invalid', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .put(`/api/v1/admin/${id}`)
+          .put(`/api/v1/admin/${ids[0]}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
@@ -380,55 +350,33 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return 404 when not found', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .put(`/api/v1/admin/${id}`)
+          .put(`/api/v1/admin/${ids[0]}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .send({
-            nama: 'example',
-            jenis_kelamin: 'L',
-          });
+          .send(req);
 
       expect(response.status).toEqual(404);
       expect(response.body.errors[0].message).toEqual('akun tidak ditemukan');
     });
 
     it('should edit successfully', async () => {
-      const id = uuid();
       const newNama = 'examples';
-      const req = {
-        nama: 'Admin Example',
-        email: 'example1@gmail.com',
-        // eslint-disable-next-line max-len
-        password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-        jenis_kelamin: 'L' as 'L',
-        role: Role.ADMIN as 'ADMIN',
-      };
 
-      await AkunTestHelper.add([{
-        id,
-        email: req.email,
-        password: req.password,
-        role: req.role,
-      }]);
-      await AdminTestHelper.add([{
-        id,
-        nama: req.nama,
-        jenis_kelamin: req.jenis_kelamin,
-      }]);
+      await AkunTestHelper.add([akunDatas[0]]);
+      await AdminTestHelper.add([adminDatas[0]]);
 
       const response = await supertest(initServer())
-          .put(`/api/v1/admin/${id}`)
+          .put(`/api/v1/admin/${adminDatas[0].id}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
           .send({nama: newNama, jenis_kelamin: req.jenis_kelamin});
 
-      const data = await AdminTestHelper.findById(id);
+      const data = await AdminTestHelper.findById(adminDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(data?.nama).toEqual(newNama.toUpperCase());
@@ -472,9 +420,8 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should return 404 when not found', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .delete(`/api/v1/admin/${id}`)
+          .delete(`/api/v1/admin/${ids[0]}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
@@ -485,37 +432,18 @@ describe('api/v1/admin endpoint', () => {
     });
 
     it('should delete successfully', async () => {
-      const id = uuid();
-      const req = {
-        nama: 'Admin Example',
-        email: 'example1@gmail.com',
-        // eslint-disable-next-line max-len
-        password: '$2a$12$rnT5tzFGh4HAYSCZfyz1XuaBU9BjwoySUsOk2jMZzhJ.ECBTFZxLO',
-        jenis_kelamin: 'L' as 'L',
-        role: Role.ADMIN as 'ADMIN',
-      };
-
-      await AkunTestHelper.add([{
-        id,
-        email: req.email,
-        password: req.password,
-        role: req.role,
-      }]);
-      await AdminTestHelper.add([{
-        id,
-        nama: req.nama,
-        jenis_kelamin: req.jenis_kelamin,
-      }]);
+      await AkunTestHelper.add([akunDatas[0]]);
+      await AdminTestHelper.add([adminDatas[0]]);
 
       const response = await supertest(initServer())
-          .delete(`/api/v1/admin/${id}`)
+          .delete(`/api/v1/admin/${adminDatas[0].id}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ]);
 
-      const akun = await AkunTestHelper.findById(id);
-      const admin = await AdminTestHelper.findById(id);
+      const akun = await AkunTestHelper.findById(adminDatas[0].id);
+      const admin = await AdminTestHelper.findById(adminDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toEqual('success');
