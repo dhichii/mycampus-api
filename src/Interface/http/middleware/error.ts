@@ -17,7 +17,7 @@ export const errorMiddleware = async (
       status = 400;
       message = JSON.parse(error.message);
     } else {
-      status = 500;
+      status = 500; console.log(error);
       message = [{message: 'Internal Server Error'}];
     }
 

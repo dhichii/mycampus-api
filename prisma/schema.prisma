@@ -19,6 +19,7 @@ model Universitas {
   alamat String @db.VarChar(255)
   keterangan String @db.Text
   logo_url String @db.VarChar(255)
+  operator Operator[]
 
   @@map("universitas")
 }
@@ -26,6 +27,126 @@ model Universitas {
 model Sekolah {
   id String @id @db.VarChar(255)
   nama String @unique @db.VarChar(255)
+  pendaftar Pendaftar[]
+  pihak_sekolah PihakSekolah[]
 
   @@map("sekolah")
+}
+
+model Authentication {
+  token String @id @db.VarChar(300)
+  expires_at DateTime
+  is_used Boolean @default(false)
+
+  @@map("authentication")
+}
+
+model Akun {
+  id String @id @db.VarChar(255)
+  email String @unique @db.VarChar(120)
+  password String @db.VarChar(255)
+  role Role
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  admin Admin?
+  operator Operator?
+  pendaftar Pendaftar?
+  pihak_sekolah PihakSekolah?
+
+  @@map("akun")
+}
+
+model Admin {
+  id String @id @db.VarChar(255)
+  nama String @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  akun Akun @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("admin")
+}
+
+model Operator {
+  id String @id @db.VarChar(255)
+  id_universitas Int
+  nama String @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  akun Akun @relation(fields: [id], references: [id], onDelete: Cascade)
+  universitas Universitas @relation(fields: [id_universitas], references: [id])
+
+  @@map("operator")
+}
+
+model Pendaftar {
+  id String @id @db.VarChar(255)
+  id_sekolah String @db.VarChar(255)
+  nama String @db.VarChar(120)
+  nisn String @unique @db.VarChar(50)
+  nik String @unique @db.VarChar(20)
+  jenis_kelamin Jenis_Kelamin
+  kewarganegaraan String @db.VarChar(50)
+  tempat_lahir String @db.VarChar(255)
+  tanggal_lahir DateTime @db.Date
+  agama Agama
+  alamat_jalan String @db.VarChar(255)
+  rt String @db.VarChar(4)
+  rw String @db.VarChar(4)
+  kelurahan String @db.VarChar(100)
+  kecamatan String @db.VarChar(100)
+  provinsi String @db.VarChar(100)
+  no_hp String @db.VarChar(20)
+  no_wa String? @db.VarChar(20)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  asal_sekolah Sekolah @relation(fields: [id_sekolah], references: [id])
+  akun Akun @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("pendaftar")
+}
+
+
+model PihakSekolah {
+  id String @id @db.VarChar(255)
+  id_sekolah String @db.VarChar(255)
+  nama String @db.VarChar(120)
+  jabatan String @db.VarChar(120)
+  jenis_kelamin Jenis_Kelamin
+  no_hp String @db.VarChar(20)
+  no_wa String? @db.VarChar(20)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  asal_sekolah Sekolah @relation(fields: [id_sekolah], references: [id])
+  akun Akun @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("pihak_sekolah")
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+  PENDAFTAR
+  SEKOLAH
+}
+
+enum Jenis_Kelamin {
+  L
+  P
+}
+
+enum Agama {
+  ISLAM
+  KRISTEN
+  KATOLIK
+  HINDU
+  BUDDHA
+  KONGHUCU
+  NONE
 }
