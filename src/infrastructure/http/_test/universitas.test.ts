@@ -34,6 +34,23 @@ describe('api/v1/universitas endpoint', () => {
   let forbiddenAccessToken = '';
   let forbiddenRefreshToken = '';
 
+  const univData = {
+    nama: 'tes',
+    alamat: 'tes',
+    keterangan: 'tes',
+    logo_url: 'tes',
+  };
+  const univDatas = [
+    {id: 1, ...univData},
+    {id: 2, ...univData},
+  ];
+
+  const req = {
+    nama: 'xxdsffjhgfhgdsfdfdsgf',
+    alamat: 'xxdsffjhgfhgdsfdfdsgf',
+    keterangan: 'xxdsffjhgfhgdsfdfdsgf',
+  };
+
   beforeAll(async () => {
     accessToken = await jwt.createAccessToken(signPayload);
     refreshToken = await jwt.createRefreshToken(signPayload);
@@ -87,18 +104,13 @@ describe('api/v1/universitas endpoint', () => {
     });
 
     it('should add universitas successfully', async () => {
-      const request = {
-        nama: 'xxdsffjhgfhgdsfdfdsgf',
-        alamat: 'xxdsffjhgfhgdsfdfdsgf',
-        keterangan: 'xxdsffjhgfhgdsfdfdsgf',
-      };
       const response = await supertest(initServer())
           .post('/api/v1/universitas')
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .field(request)
+          .field(req)
           .attach('logo', 'test/test-img.png');
 
       const {id, nama, alamat, keterangan, logo_url: logo} = response.body.data;
@@ -109,9 +121,9 @@ describe('api/v1/universitas endpoint', () => {
       expect(response.status).toEqual(201);
       expect(response.body.data).toBeDefined();
       expect(id).toBeDefined();
-      expect(nama).toEqual(request.nama.toUpperCase());
-      expect(alamat).toEqual(request.alamat);
-      expect(keterangan).toEqual(request.keterangan);
+      expect(nama).toEqual(req.nama.toUpperCase());
+      expect(alamat).toEqual(req.alamat);
+      expect(keterangan).toEqual(req.keterangan);
       expect(logo).toBeDefined();
     });
   });
@@ -128,17 +140,6 @@ describe('api/v1/universitas endpoint', () => {
     });
 
     it('should return all universitas', async () => {
-      const univData = {
-        nama: 'tes',
-        alamat: 'tes',
-        keterangan: 'tes',
-        logo_url: 'tes',
-      };
-      const univDatas = [
-        {id: 1, ...univData},
-        {id: 2, ...univData},
-      ];
-
       await UniversitasTestHelper.add(univDatas);
 
       const response = await supertest(initServer())
@@ -190,15 +191,7 @@ describe('api/v1/universitas endpoint', () => {
     });
 
     it('should return universitas', async () => {
-      const univData = [{
-        id: 1,
-        nama: 'tes',
-        alamat: 'tes',
-        keterangan: 'tes',
-        logo_url: 'tes',
-      }];
-
-      await UniversitasTestHelper.add(univData);
+      await UniversitasTestHelper.add([univDatas[0]]);
 
       const response = await supertest(initServer())
           .get('/api/v1/universitas/1')
@@ -208,7 +201,7 @@ describe('api/v1/universitas endpoint', () => {
           ]);
 
       expect(response.status).toEqual(200);
-      expect(response.body.data).toStrictEqual(univData[0]);
+      expect(response.body.data).toStrictEqual(univDatas[0]);
     });
   });
 
@@ -277,37 +270,23 @@ describe('api/v1/universitas endpoint', () => {
     });
 
     it('should edit successfully', async () => {
-      const univData = [{
-        id: 1,
-        nama: 'tes',
-        alamat: 'tes',
-        keterangan: 'tes',
-        logo_url: 'tes',
-      }];
-
-      await UniversitasTestHelper.add(univData);
-
-      const request = {
-        nama: 'xxdsffjhgfhgdsfdfdsgf',
-        alamat: 'xxdsffjhgfhgdsfdfdsgf',
-        keterangan: 'xxdsffjhgfhgdsfdfdsgf',
-      };
+      await UniversitasTestHelper.add([univDatas[0]]);
 
       const response = await supertest(initServer())
-          .put(`/api/v1/universitas/${univData[0].id}`)
+          .put(`/api/v1/universitas/${univDatas[0].id}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .field(request);
+          .field(req);
 
-      const universitas = await UniversitasTestHelper.findById(univData[0].id);
+      const universitas = await UniversitasTestHelper.findById(univDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toBe('success');
-      expect(universitas?.nama).toBe(request.nama.toUpperCase());
-      expect(universitas?.alamat).toBe(request.alamat);
-      expect(universitas?.keterangan).toBe(request.keterangan);
+      expect(universitas?.nama).toBe(req.nama.toUpperCase());
+      expect(universitas?.alamat).toBe(req.alamat);
+      expect(universitas?.keterangan).toBe(req.keterangan);
     });
   });
 
@@ -361,18 +340,11 @@ describe('api/v1/universitas endpoint', () => {
 
     it('should delete successfully', async () => {
       const logoUrl = await TestFileHelper.copy();
-      const univData = [{
-        id: 1,
-        nama: 'tes',
-        alamat: 'tes',
-        keterangan: 'tes',
-        logo_url: logoUrl,
-      }];
 
-      await UniversitasTestHelper.add(univData);
+      await UniversitasTestHelper.add([{...univDatas[0], logo_url: logoUrl}]);
 
       const response = await supertest(initServer())
-          .delete(`/api/v1/universitas/${univData[0].id}`)
+          .delete(`/api/v1/universitas/${univDatas[0].id}`)
           .set('Cookie', [
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
@@ -382,7 +354,7 @@ describe('api/v1/universitas endpoint', () => {
         await TestFileHelper.delete();
       }
 
-      const universitas = await UniversitasTestHelper.findById(univData[0].id);
+      const universitas = await UniversitasTestHelper.findById(univDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toBe('success');
@@ -441,15 +413,8 @@ describe('api/v1/universitas endpoint', () => {
     it('should edit logo successfully', async () => {
       const fileName = new Date().toString + '.png';
       const logoUrl = await TestFileHelper.copy(fileName);
-      const univData = [{
-        id: 1,
-        nama: 'tes',
-        alamat: 'tes',
-        keterangan: 'tes',
-        logo_url: logoUrl,
-      }];
 
-      await UniversitasTestHelper.add(univData);
+      await UniversitasTestHelper.add([{...univDatas[0], logo_url: logoUrl}]);
 
       const response = await supertest(initServer())
           .patch(`/api/v1/universitas/1/logo`)
@@ -463,7 +428,7 @@ describe('api/v1/universitas endpoint', () => {
         await TestFileHelper.delete(fileName);
       }
 
-      const universitas = await UniversitasTestHelper.findById(univData[0].id);
+      const universitas = await UniversitasTestHelper.findById(univDatas[0].id);
 
       await TestFileHelper.delete(universitas?.logo_url);
 
