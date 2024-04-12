@@ -11,6 +11,9 @@ import {EditSekolahByIdUsecase}
 import {SekolahHandler} from './handler';
 import {DeleteSekolahByIdUsecase}
   from '../../../../application/usecase/sekolah/DeleteByIdUsecase';
+import {authenticationMiddleware} from '../../middleware/authentication';
+import {authorizationMiddleware} from '../../middleware/authorization';
+import {Role} from '../../../../util/enum';
 
 export function sekolahRouter() {
   // eslint-disable-next-line new-cap
@@ -34,11 +37,23 @@ export function sekolahRouter() {
 
   // routes
   router.route('/sekolah')
-      .post(handler.add)
-      .get(handler.getAll);
+      .post(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.add,
+      )
+      .get(authenticationMiddleware, handler.getAll);
   router.route('/sekolah/:id')
-      .put(handler.editById)
-      .delete(handler.deleteById);
+      .put(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.editById,
+      )
+      .delete(
+          authenticationMiddleware,
+          authorizationMiddleware([Role.ADMIN]),
+          handler.deleteById,
+      );
 
   return router;
 }
