@@ -4,6 +4,11 @@ import {initServer} from '../server';
 import {v4 as uuid} from 'uuid';
 
 describe('api/v1/sekolah endpoint', () => {
+  const sekolahDatas = [
+    {id: uuid(), nama: 'SEKOLAH 1'},
+    {id: uuid(), nama: 'SEKOLAH 2'},
+  ];
+
   afterEach(async () => {
     await SekolahTestHelper.clean();
   });
@@ -42,10 +47,6 @@ describe('api/v1/sekolah endpoint', () => {
 
   describe('when GET /sekolah', () => {
     it('should return all sekolah', async () => {
-      const sekolahDatas = [
-        {id: uuid(), nama: 'SEKOLAH 1'},
-        {id: uuid(), nama: 'SEKOLAH 2'},
-      ];
       await SekolahTestHelper.add(sekolahDatas);
 
       const response = await supertest(initServer())
@@ -62,10 +63,7 @@ describe('api/v1/sekolah endpoint', () => {
 
     it('should return 0 record when searched sekolah is not found',
         async () => {
-          const sekolahDatas = [
-            {id: uuid(), nama: 'SEKOLAH 1'},
-          ];
-          await SekolahTestHelper.add(sekolahDatas);
+          await SekolahTestHelper.add([sekolahDatas[0]]);
 
           const response = await supertest(initServer())
               .get('/api/v1/sekolah?search=x');
@@ -76,10 +74,6 @@ describe('api/v1/sekolah endpoint', () => {
     );
 
     it('should return 1 record when searched sekolah is found', async () => {
-      const sekolahDatas = [
-        {id: uuid(), nama: 'SEKOLAH 1'},
-        {id: uuid(), nama: 'SEKOLAH 2'},
-      ];
       await SekolahTestHelper.add(sekolahDatas);
 
       const response = await supertest(initServer())
@@ -99,18 +93,16 @@ describe('api/v1/sekolah endpoint', () => {
     });
 
     it('should return 400 when request invalid', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .put(`/api/v1/sekolah/${id}`);
+          .put(`/api/v1/sekolah/${sekolahDatas[0].id}`);
 
       expect(response.status).toEqual(400);
       expect(response.body.errors[0].path[0]).toEqual('nama');
     });
 
     it('should return 404 when not found', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .put(`/api/v1/sekolah/${id}`)
+          .put(`/api/v1/sekolah/${sekolahDatas[0].id}`)
           .send({nama: 'SEKOLAH NEGERI 1'});
 
       expect(response.status).toEqual(404);
@@ -118,18 +110,14 @@ describe('api/v1/sekolah endpoint', () => {
     });
 
     it('should edit successfully', async () => {
-      const id = uuid();
       const newNama = 'SEKOLAH NEGERI 1';
-      const sekolahDatas = [
-        {id, nama: 'SEKOLAH 1'},
-      ];
-      await SekolahTestHelper.add(sekolahDatas);
+      await SekolahTestHelper.add([sekolahDatas[0]]);
 
       const response = await supertest(initServer())
-          .put(`/api/v1/sekolah/${id}`)
+          .put(`/api/v1/sekolah/${sekolahDatas[0].id}`)
           .send({nama: newNama});
 
-      const data = await SekolahTestHelper.findById(id);
+      const data = await SekolahTestHelper.findById(sekolahDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(data?.nama).toEqual(newNama);
@@ -145,25 +133,20 @@ describe('api/v1/sekolah endpoint', () => {
     });
 
     it('should return 404 when not found', async () => {
-      const id = uuid();
       const response = await supertest(initServer())
-          .delete(`/api/v1/sekolah/${id}`);
+          .delete(`/api/v1/sekolah/${sekolahDatas[0].id}`);
 
       expect(response.status).toEqual(404);
       expect(response.body.errors[0].message).toEqual('sekolah not found');
     });
 
     it('should delete successfully', async () => {
-      const id = uuid();
-      const sekolahDatas = [
-        {id, nama: 'SEKOLAH 1'},
-      ];
-      await SekolahTestHelper.add(sekolahDatas);
+      await SekolahTestHelper.add([sekolahDatas[0]]);
 
       const response = await supertest(initServer())
-          .delete(`/api/v1/sekolah/${id}`);
+          .delete(`/api/v1/sekolah/${sekolahDatas[0].id}`);
 
-      const sekolah = await SekolahTestHelper.findById(id);
+      const sekolah = await SekolahTestHelper.findById(sekolahDatas[0].id);
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toEqual('success');
