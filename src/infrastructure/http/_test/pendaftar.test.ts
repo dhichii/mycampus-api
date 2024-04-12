@@ -15,6 +15,12 @@ describe('api/v1/pendaftar endpoint', () => {
     role: Role.ADMIN,
   };
 
+  // forbidden role data
+  const forbiddenPayload = {
+    id: uuid(),
+    role: Role.OPERATOR,
+  };
+
   // token data
   const jwt = new Jwt();
   const signPayload = jwt.mapJwtSignPayload(
@@ -22,6 +28,13 @@ describe('api/v1/pendaftar endpoint', () => {
   );
   let accessToken = '';
   let refreshToken = '';
+
+  // forbidden token data
+  const forbiddenSignPayload = jwt.mapJwtSignPayload(
+    {...forbiddenPayload} as JwtSignPayload,
+  );
+  let forbiddenAccessToken = '';
+  let forbiddenRefreshToken = '';
 
   // sekolah data
   const sekolahData = {
@@ -93,6 +106,8 @@ describe('api/v1/pendaftar endpoint', () => {
   beforeAll(async () => {
     accessToken = await jwt.createAccessToken(signPayload);
     refreshToken = await jwt.createRefreshToken(signPayload);
+    forbiddenAccessToken = await jwt.createAccessToken(forbiddenSignPayload);
+    forbiddenRefreshToken = await jwt.createRefreshToken(forbiddenSignPayload);
 
     await SekolahTestHelper.add([sekolahData]);
   });
@@ -114,6 +129,19 @@ describe('api/v1/pendaftar endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/pendaftar')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return all pendaftar', async () => {
@@ -181,6 +209,19 @@ describe('api/v1/pendaftar endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/pendaftar/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return 400 when id invalid', async () => {
@@ -254,6 +295,19 @@ describe('api/v1/pendaftar endpoint', () => {
           .toEqual('sesi kadaluarsa, silahkan login kembali');
     });
 
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .put('/api/v1/pendaftar/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
+    });
+
     it('should return 400 when id invalid', async () => {
       const response = await supertest(initServer())
           .put('/api/v1/pendaftar/x')
@@ -307,6 +361,19 @@ describe('api/v1/pendaftar endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .delete('/api/v1/pendaftar/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return 400 when id invalid', async () => {

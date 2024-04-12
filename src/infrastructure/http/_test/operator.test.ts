@@ -14,6 +14,12 @@ describe('api/v1/operator endpoint', () => {
     role: Role.ADMIN,
   };
 
+  // forbidden role data
+  const forbiddenPayload = {
+    id: uuid(),
+    role: Role.OPERATOR,
+  };
+
   // token data
   const jwt = new Jwt();
   const signPayload = jwt.mapJwtSignPayload(
@@ -21,6 +27,13 @@ describe('api/v1/operator endpoint', () => {
   );
   let accessToken = '';
   let refreshToken = '';
+
+  // forbidden token data
+  const forbiddenSignPayload = jwt.mapJwtSignPayload(
+    {...forbiddenPayload} as JwtSignPayload,
+  );
+  let forbiddenAccessToken = '';
+  let forbiddenRefreshToken = '';
 
   // universitas data
   const universitasData = {
@@ -67,6 +80,8 @@ describe('api/v1/operator endpoint', () => {
   beforeAll(async () => {
     accessToken = await jwt.createAccessToken(signPayload);
     refreshToken = await jwt.createRefreshToken(signPayload);
+    forbiddenAccessToken = await jwt.createAccessToken(forbiddenSignPayload);
+    forbiddenRefreshToken = await jwt.createRefreshToken(forbiddenSignPayload);
 
     await UniversitasTestHelper.add([universitasData]);
   });
@@ -88,6 +103,19 @@ describe('api/v1/operator endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .post('/api/v1/operator')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return 400 when request invalid', async () => {
@@ -134,6 +162,19 @@ describe('api/v1/operator endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/operator')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return all operator', async () => {
@@ -200,6 +241,19 @@ describe('api/v1/operator endpoint', () => {
           .toEqual('sesi kadaluarsa, silahkan login kembali');
     });
 
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .get('/api/v1/operator/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
+    });
+
     it('should return 400 when id is invalid', async () => {
       const response = await supertest(initServer())
           .get('/api/v1/operator/s')
@@ -256,6 +310,19 @@ describe('api/v1/operator endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .put('/api/v1/operator/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return 400 when id is invalid', async () => {
@@ -324,6 +391,19 @@ describe('api/v1/operator endpoint', () => {
       expect(response.status).toEqual(401);
       expect(errors[0].message)
           .toEqual('sesi kadaluarsa, silahkan login kembali');
+    });
+
+    it('should return 403 when role invalid', async () => {
+      const response = await supertest(initServer())
+          .delete('/api/v1/operator/x')
+          .set('Cookie', [
+            `Authorization=Bearer%20${forbiddenAccessToken}`,
+            `r=Bearer%20${forbiddenRefreshToken}`,
+          ]);
+
+      const errors = response.body.errors;
+      expect(response.status).toEqual(403);
+      expect(errors[0].message).toEqual('Anda tidak memiliki akses');
     });
 
     it('should return 400 when id is invalid', async () => {
