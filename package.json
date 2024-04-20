@@ -11,12 +11,17 @@
     "test:watch": "dotenv -e .env.test -- jest --runInBand --watchAll --coverage",
     "test:watch:change": "dotenv -e .env.test -- jest --runInBand --watch --coverage",
     "migrate": "prisma migrate deploy",
-    "migrate:test": "dotenv -e .env.test -- prisma migrate deploy"
+    "migrate:test": "dotenv -e .env.test -- prisma migrate deploy",
+    "seed": "prisma db seed",
+    "seed:test": "dotenv -e .env.test -- prisma db seed"
   },
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
+  },
+  "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
   },
   "author": "Adhicitta Masran",
   "license": "ISC",
