@@ -24,6 +24,12 @@ model Universitas {
   @@map("universitas")
 }
 
+model Jenjang {
+  id Int @id
+  nama String @db.VarChar(3)
+  @@map("jenjang")
+}
+
 model Sekolah {
   id String @id @db.VarChar(255)
   nama String @unique @db.VarChar(255)
