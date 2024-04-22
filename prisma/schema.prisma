@@ -30,6 +30,13 @@ model Jenjang {
   @@map("jenjang")
 }
 
+model PotensiKarir {
+  id Int @id @default(autoincrement())
+  nama String @unique @db.VarChar(255)
+
+  @@map("potensi_karir")
+}
+
 model Sekolah {
   id String @id @db.VarChar(255)
   nama String @unique @db.VarChar(255)
