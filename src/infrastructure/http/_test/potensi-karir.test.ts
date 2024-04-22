@@ -34,7 +34,7 @@ describe('api/v1/potensi-karir endpoint', () => {
   let forbiddenRefreshToken = '';
 
   // potensi karir data
-  const ids = [1, 2];
+  const ids = [12, 23];
   const potensiKarirDatas = [
     {
       id: ids[0],
