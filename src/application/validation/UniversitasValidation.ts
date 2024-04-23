@@ -3,6 +3,7 @@ import {ZodType, z} from 'zod';
 export class UniversitasValidation {
   static readonly ADD: ZodType = z.object({
     nama: z.string().min(20).max(120),
+    jenis: z.enum(['NEGERI', 'SWASTA']),
     alamat: z.string().min(20).max(255),
     keterangan: z.string(),
     logo: z.string().min(1).max(255),
@@ -15,6 +16,7 @@ export class UniversitasValidation {
   static readonly EDIT_BY_ID: ZodType = z.object({
     id: z.number().min(1),
     nama: z.string().min(20).max(120),
+    jenis: z.enum(['NEGERI', 'SWASTA']),
     alamat: z.string().min(20).max(255),
     keterangan: z.string(),
   });
