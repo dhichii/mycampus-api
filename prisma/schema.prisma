@@ -16,6 +16,7 @@ datasource db {
 model Universitas {
   id Int @id @default(autoincrement())
   nama String @db.VarChar(120)
+  jenis Jenis_Universitas
   alamat String @db.VarChar(255)
   keterangan String @db.Text
   logo_url String @db.VarChar(255)
@@ -152,6 +153,11 @@ enum Role {
 enum Jenis_Kelamin {
   L
   P
+}
+
+enum Jenis_Universitas {
+  NEGERI
+  SWASTA
 }
 
 enum Agama {
