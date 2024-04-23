@@ -6,6 +6,7 @@ import {v4 as uuid} from 'uuid';
 import {Role} from '../../../util/enum';
 import {Jwt, JwtSignPayload} from '../../security/Jwt';
 import {UniversitasTestHelper} from '../../../../test/UniversitasTestHelper';
+import {Jenis_Universitas as JenisUniversitas} from '@prisma/client';
 
 describe('api/v1/operator endpoint', () => {
   // admin data
@@ -39,6 +40,7 @@ describe('api/v1/operator endpoint', () => {
   const universitasData = {
     id: 1,
     nama: 'UNIVERSITY OF EXAMPLE',
+    jenis: JenisUniversitas.NEGERI,
     alamat: 'TEST STREET',
     keterangan: 'TEST',
     logo_url: 'test.png',

@@ -1,5 +1,6 @@
 export type AddUniversitasReq = {
   nama: string;
+  jenis: string;
   alamat: string;
   keterangan: string;
   logo: string;
@@ -7,6 +8,7 @@ export type AddUniversitasReq = {
 
 export type AddUniversitasInput = {
   nama: string;
+  jenis: string;
   alamat: string;
   keterangan: string;
   logo_url: string;
@@ -15,12 +17,14 @@ export type AddUniversitasInput = {
 export type EditUniversitasReq = {
   id: number;
   nama: string;
+  jenis: string;
   alamat: string;
   keterangan: string;
 }
 
 export type EditUniversitasInput = {
   nama: string;
+  jenis: string;
   alamat: string;
   keterangan: string;
 }
@@ -36,6 +40,7 @@ export function mapAddUniversitasReq(
 ): AddUniversitasInput {
   return {
     nama: req.nama.toUpperCase(),
+    jenis: req.jenis,
     alamat: req.alamat,
     keterangan: req.keterangan,
     logo_url: req.logo,
@@ -47,6 +52,7 @@ export function mapEditUniversitasReq(
 ): EditUniversitasInput {
   return {
     nama: req.nama.toUpperCase(),
+    jenis: req.jenis,
     alamat: req.alamat,
     keterangan: req.keterangan,
   };

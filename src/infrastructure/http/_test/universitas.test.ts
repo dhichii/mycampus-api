@@ -5,6 +5,7 @@ import {TestFileHelper} from '../../../../test/TestFileHelper';
 import {Jwt, JwtSignPayload} from '../../security/Jwt';
 import {v4 as uuid} from 'uuid';
 import {Role} from '../../../util/enum';
+import {Jenis_Universitas as JenisUniversitas} from '@prisma/client';
 
 describe('api/v1/universitas endpoint', () => {
   // admin data
@@ -37,6 +38,7 @@ describe('api/v1/universitas endpoint', () => {
   const univData = {
     nama: 'tes',
     alamat: 'tes',
+    jenis: JenisUniversitas.NEGERI,
     keterangan: 'tes',
     logo_url: 'tes',
   };
@@ -49,6 +51,7 @@ describe('api/v1/universitas endpoint', () => {
     nama: 'xxdsffjhgfhgdsfdfdsgf',
     alamat: 'xxdsffjhgfhgdsfdfdsgf',
     keterangan: 'xxdsffjhgfhgdsfdfdsgf',
+    jenis: 'NEGERI',
   };
 
   beforeAll(async () => {
@@ -98,9 +101,10 @@ describe('api/v1/universitas endpoint', () => {
       const errors = response.body.errors;
       expect(response.status).toEqual(400);
       expect(errors[0].path[0]).toEqual('nama');
-      expect(errors[1].path[0]).toEqual('alamat');
-      expect(errors[2].path[0]).toEqual('keterangan');
-      expect(errors[3].path[0]).toEqual('logo');
+      expect(errors[1].path[0]).toEqual('jenis');
+      expect(errors[2].path[0]).toEqual('alamat');
+      expect(errors[3].path[0]).toEqual('keterangan');
+      expect(errors[4].path[0]).toEqual('logo');
     });
 
     it('should add universitas successfully', async () => {
@@ -113,18 +117,19 @@ describe('api/v1/universitas endpoint', () => {
           .field(req)
           .attach('logo', 'test/test-img.png');
 
-      const {id, nama, alamat, keterangan, logo_url: logo} = response.body.data;
+      const res = response.body.data;
 
       // delete uploaded img
-      await TestFileHelper.delete(logo);
+      await TestFileHelper.delete(res.logo_url);
 
       expect(response.status).toEqual(201);
       expect(response.body.data).toBeDefined();
-      expect(id).toBeDefined();
-      expect(nama).toEqual(req.nama.toUpperCase());
-      expect(alamat).toEqual(req.alamat);
-      expect(keterangan).toEqual(req.keterangan);
-      expect(logo).toBeDefined();
+      expect(res.id).toBeDefined();
+      expect(res.nama).toEqual(req.nama.toUpperCase());
+      expect(res.jenis).toEqual(req.jenis);
+      expect(res.alamat).toEqual(req.alamat);
+      expect(res.keterangan).toEqual(req.keterangan);
+      expect(res.logo_url).toBeDefined();
     });
   });
 
@@ -259,11 +264,7 @@ describe('api/v1/universitas endpoint', () => {
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .field({
-            nama: 'nama=xxdsffjhgfhgdsfdfdsgf',
-            alamat: 'xxdsffjhgfhgdsfdfdsgf',
-            keterangan: 'xxdsffjhgfhgdsfdfdsgf',
-          });
+          .field(req);
 
       expect(response.status).toEqual(404);
       expect(response.body.errors).toBeDefined();
@@ -285,6 +286,7 @@ describe('api/v1/universitas endpoint', () => {
       expect(response.status).toEqual(200);
       expect(response.body.status).toBe('success');
       expect(universitas?.nama).toBe(req.nama.toUpperCase());
+      expect(universitas?.jenis).toBe(req.jenis);
       expect(universitas?.alamat).toBe(req.alamat);
       expect(universitas?.keterangan).toBe(req.keterangan);
     });
