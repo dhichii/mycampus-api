@@ -9,6 +9,8 @@ Request Body:
 
 - Key: nama\
   type: string
+- Key: jenis\
+  type: string
 - Key: alamat\
   type: string
 - Key: keterangan\
@@ -21,7 +23,8 @@ Response Body (Success):
 {
   "data": {
     "id": 1,
-    "nama": "Example",
+    "nama": "EXAMPLE",
+    "jenis": "NEGERI",
     "alamat": "Example",
     "keterangan": "Example",
     "logo_url": "example.png"
@@ -49,13 +52,15 @@ Response Body (Success):
       {
         "id": 1,
         "nama": "Example 1",
-        "alamat": "Example",
+        "alamat": "EXAMPLE",
+        "jenis": "NEGERI",
         "keterangan": "Example",
         "logo_url": "example.png"
       },
       {
         "id": 2,
-        "nama": "Example 2",
+        "nama": "EXAMPLE 2",
+        "jenis": "SWASTA",
         "alamat": "Example",
         "keterangan": "Example",
         "logo_url": "example.png"
@@ -84,7 +89,8 @@ Response Body (Success):
 {
   "data": {
     "id": 1,
-    "nama": "Example",
+    "nama": "EXAMPLE",
+    "jenis": "SWASTA",
     "alamat": "Example",
     "keterangan": "Example",
     "logo_url": "example.png"
@@ -113,6 +119,8 @@ Request Type: multipart/form-data
 Request Body:
 
 - Key: nama\
+  type: string
+- Key: jenis\
   type: string
 - Key: alamat\
   type: string
