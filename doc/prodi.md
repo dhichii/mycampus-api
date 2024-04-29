@@ -97,7 +97,6 @@ Response Body (Success):
         "akreditasi": "Sangat Baik",
         "biaya_pendaftaran": 200000.00,
         "ukt": 15000000.00,
-        "keterangan": "example",
         "potensi_karir": [
           {
             "id": 1,
@@ -120,7 +119,6 @@ Response Body (Success):
         "akreditasi": "Sangat Baik",
         "biaya_pendaftaran": 200000.00,
         "ukt": 15000000.00,
-        "keterangan": "example",
         "potensi_karir": [
           {
             "id": 1,
