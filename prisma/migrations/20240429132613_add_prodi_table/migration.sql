@@ -32,7 +32,7 @@ CREATE TABLE "prodi_potensi_karir" (
 ALTER TABLE "prodi" ADD CONSTRAINT "prodi_id_universitas_fkey" FOREIGN KEY ("id_universitas") REFERENCES "universitas"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "prodi_potensi_karir" ADD CONSTRAINT "prodi_potensi_karir_id_prodi_fkey" FOREIGN KEY ("id_prodi") REFERENCES "prodi"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "prodi_potensi_karir" ADD CONSTRAINT "prodi_potensi_karir_id_prodi_fkey" FOREIGN KEY ("id_prodi") REFERENCES "prodi"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "prodi_potensi_karir" ADD CONSTRAINT "prodi_potensi_karir_id_potensi_karir_fkey" FOREIGN KEY ("id_potensi_karir") REFERENCES "potensi_karir"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "prodi_potensi_karir" ADD CONSTRAINT "prodi_potensi_karir_id_potensi_karir_fkey" FOREIGN KEY ("id_potensi_karir") REFERENCES "potensi_karir"("id") ON DELETE CASCADE ON UPDATE CASCADE;

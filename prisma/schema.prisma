@@ -52,9 +52,9 @@ model PotensiKarir {
 }
 
 model ProdiPotensiKarir {
-  prodi Prodi @relation(fields: [id_prodi], references: [id])
+  prodi Prodi @relation(fields: [id_prodi], references: [id], onDelete: Cascade)
   id_prodi String
-  potensi_karir PotensiKarir @relation(fields: [id_potensi_karir], references: [id])
+  potensi_karir PotensiKarir @relation(fields: [id_potensi_karir], references: [id], onDelete: Cascade)
   id_potensi_karir Int
 
   @@id([id_prodi, id_potensi_karir])
