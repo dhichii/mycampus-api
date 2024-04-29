@@ -20,7 +20,6 @@ Request Body:
   "keterangan": "example",
   "potensi_karir": [
     {
-      "id": 1,
       "nama": "example"
     }
   ]
@@ -235,11 +234,9 @@ Request Body:
 ```json
 [
     {
-      "id": 1,
       "nama": "example"
     },
     {
-      "id": 0,
       "nama": "example 2"
     }
 ]
