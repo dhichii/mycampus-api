@@ -84,6 +84,7 @@ export function akunRouter() {
   const addAkunUsecase = new AddAkunUsecase(akunRepo);
   const addPendaftarUsecase = new AddPendaftarUsecase(
       pendaftarRepo,
+      sekolahRepo,
       addSekolahUsecase,
       addAkunUsecase,
   );

@@ -10,6 +10,7 @@ export interface SekolahRepository {
   getAll(req: GetAllSekolahInput): Promise<[number, Sekolah[]]>;
   getAllByIds(ids: string[]): Promise<Sekolah[]>;
   getById(id: string): Promise<Sekolah>;
+  getByNama(nama: string): Promise<Sekolah>;
   editById(id: string, sekolah: EditSekolahInput): Promise<void>;
   deleteById(id: string): Promise<void>;
   verify(id: string): Promise<void>;

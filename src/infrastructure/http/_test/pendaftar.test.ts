@@ -328,7 +328,7 @@ describe('api/v1/pendaftar endpoint', () => {
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .send(pendaftarDatas[0]);
+          .send({...pendaftarDatas[0], asal_sekolah: sekolahData.nama});
 
       const errors = response.body.errors;
       expect(response.status).toEqual(404);
@@ -345,7 +345,7 @@ describe('api/v1/pendaftar endpoint', () => {
             `Authorization=Bearer%20${accessToken}`,
             `r=Bearer%20${refreshToken}`,
           ])
-          .send(pendaftarDatas[0]);
+          .send({...pendaftarDatas[0], asal_sekolah: sekolahData.nama});
 
       expect(response.status).toEqual(200);
       expect(response.body.status).toEqual('success');

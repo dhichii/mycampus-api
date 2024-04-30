@@ -52,6 +52,15 @@ export class SekolahRepositoryImpl implements SekolahRepository {
     return data;
   }
 
+  async getByNama(nama: string): Promise<Sekolah> {
+    const data = await this.db.sekolah.findUnique({where: {nama}});
+    if (!data) {
+      throw new ResponseError(404, 'sekolah not found');
+    }
+
+    return data;
+  }
+
   async editById(id: string, sekolah: EditSekolahInput): Promise<void> {
     try {
       await this.db.sekolah.update({

@@ -353,7 +353,7 @@ describe('api/v1/akun endpoint', () => {
 
       const response = await supertest(initServer())
           .post('/api/v1/akun/register/pendaftar')
-          .send(pendaftarData);
+          .send({...pendaftarData, asal_sekolah: sekolahData.nama});
 
 
       expect(response.status).toEqual(201);
