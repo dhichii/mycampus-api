@@ -12,6 +12,7 @@ import {pendaftarRouter} from '../../Interface/http/api/pendaftar/router';
 import {operatorRouter} from '../../Interface/http/api/operator/router';
 import {potensiKarirRouter}
   from '../../Interface/http/api/potensi_karir/router';
+import {prodiRouter} from '../../Interface/http/api/prodi/router';
 
 export const initServer = () => {
   const app = express();
@@ -33,6 +34,7 @@ export const initServer = () => {
       pendaftarRouter(),
       operatorRouter(),
       potensiKarirRouter(),
+      prodiRouter(),
   );
   app.use(errorMiddleware);
 

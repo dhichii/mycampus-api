@@ -21,21 +21,44 @@ model Universitas {
   keterangan String @db.Text
   logo_url String @db.VarChar(255)
   operator Operator[]
+  prodi Prodi[]
 
   @@map("universitas")
 }
 
-model Jenjang {
-  id Int @id
-  nama String @db.VarChar(3)
-  @@map("jenjang")
+model Prodi {
+  id String @id @db.VarChar(255)
+  id_universitas Int
+  nama String @db.VarChar(255)
+  kode_prodi Int
+  jenjang Jenjang
+  status Status_Prodi
+  akreditasi String
+  biaya_pendaftaran Float
+  ukt Float
+  keterangan String @db.Text
+  universitas Universitas @relation(fields: [id_universitas], references: [id], onDelete: Cascade)
+  potensi_karir ProdiPotensiKarir[]
+
+  @@map("prodi")
 }
 
 model PotensiKarir {
   id Int @id @default(autoincrement())
   nama String @unique @db.VarChar(255)
+  prodi ProdiPotensiKarir[]
 
   @@map("potensi_karir")
+}
+
+model ProdiPotensiKarir {
+  prodi Prodi @relation(fields: [id_prodi], references: [id], onDelete: Cascade)
+  id_prodi String
+  potensi_karir PotensiKarir @relation(fields: [id_potensi_karir], references: [id], onDelete: Cascade)
+  id_potensi_karir Int
+
+  @@id([id_prodi, id_potensi_karir])
+  @@map("prodi_potensi_karir")
 }
 
 model Sekolah {
@@ -168,4 +191,18 @@ enum Agama {
   BUDDHA
   KONGHUCU
   NONE
+}
+
+enum Jenjang {
+  D1
+  D2
+  D3
+  S1
+  S2
+  S3
+}
+
+enum Status_Prodi {
+  Aktif
+  Tutup
 }
