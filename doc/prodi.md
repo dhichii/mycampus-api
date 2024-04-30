@@ -232,14 +232,16 @@ Request Type: application/json
 
 Request Body:
 ```json
-[
+{
+  "potensi_karir": [
     {
       "nama": "example"
     },
     {
       "nama": "example 2"
     }
-]
+  ]
+}
 ```
 
 Response Body (Success):
