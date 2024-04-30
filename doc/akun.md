@@ -124,7 +124,6 @@ Request Body:
   "nik": "3400000001924671",
   "nisn": "5672832432",
   "jenis_kelamin": "L" or "P",
-  "id_sekolah": "015fcfa3-0c72-47ed-b52f-5eb805de4c31",
   "asal_sekolah": "SMA NEGERI 1 X",
   "kewarganegaraan": "INDONESIA",
   "tempat_lahir": "JAKARTA",

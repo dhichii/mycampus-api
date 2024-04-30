@@ -18,6 +18,8 @@ import {PendaftarHandler} from './handler';
 import {authenticationMiddleware} from '../../middleware/authentication';
 import {authorizationMiddleware} from '../../middleware/authorization';
 import {Role} from '../../../../util/enum';
+import {AddSekolahUsecase}
+  from '../../../../application/usecase/sekolah/AddUsecase';
 
 export function pendaftarRouter() {
   // eslint-disable-next-line new-cap
@@ -29,6 +31,7 @@ export function pendaftarRouter() {
   const sekolahRepo = new SekolahRepositoryImpl(prismaClient);
 
   // usecase
+  const addSekolahUsecase = new AddSekolahUsecase(sekolahRepo);
   const getAllPendaftarUsecase = new GetAllPendaftarUsecase(
       pendaftarRepo,
       akunRepo,
@@ -39,7 +42,11 @@ export function pendaftarRouter() {
       akunRepo,
       sekolahRepo,
   );
-  const editPendaftarByIdUsecase = new EditPendaftarByIdUsecase(pendaftarRepo);
+  const editPendaftarByIdUsecase = new EditPendaftarByIdUsecase(
+      pendaftarRepo,
+      sekolahRepo,
+      addSekolahUsecase,
+  );
   const deletePendaftarByIdUsecase = new DeletePendaftarByIdUsecase(
       pendaftarRepo,
       akunRepo,
