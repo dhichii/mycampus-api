@@ -39,6 +39,7 @@ model Prodi {
   keterangan String @db.Text
   universitas Universitas @relation(fields: [id_universitas], references: [id], onDelete: Cascade)
   potensi_karir ProdiPotensiKarir[]
+  pendaftaran Pendaftaran[]
 
   @@map("prodi")
 }
@@ -144,10 +145,25 @@ model Pendaftar {
   deleted_at DateTime?
   asal_sekolah Sekolah @relation(fields: [id_sekolah], references: [id])
   akun Akun @relation(fields: [id], references: [id], onDelete: Cascade)
+  pendaftaran Pendaftaran[]
 
   @@map("pendaftar")
 }
 
+model Pendaftaran {
+  id String @id @db.VarChar(255)
+  pendaftar Pendaftar @relation(fields: [id_pendaftar], references: [id], onDelete: Cascade)
+  id_pendaftar String
+  prodi Prodi @relation(fields: [id_prodi], references: [id], onDelete: Cascade)
+  id_prodi String
+  jalur_pendaftaran String
+  status StatusPendaftaran @default(Menunggu)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+
+  @@map("pendaftaran")
+}
 
 model PihakSekolah {
   id String @id @db.VarChar(255)
@@ -205,4 +221,11 @@ enum Jenjang {
 enum Status_Prodi {
   Aktif
   Tutup
+}
+
+enum StatusPendaftaran {
+  Menunggu
+  Diproses
+  Ditolak
+  Lulus
 }
