@@ -47,6 +47,9 @@ Query Param:
 - key: universitas\
   type: number\
   required: false
+- key: prodi\
+  type: string\
+  required: false
 - key: status\
   type: string\
   required: false
@@ -71,8 +74,9 @@ Response Body (Success):
         "prodi": {
           "id": "e6314752-c753-47dc-bc82-eae480d1b094",
           "nama": "EXAMPLE 1",
+          "jenjang": "S1",
           "universitas": {
-            "id": "e6314752-c753-47dc-bc82-eae480d1b094",
+            "id": 1,
             "nama": "EXAMPLE 1",
             "jenis": "NEGERI",
             "logo_url": "example.png"
@@ -92,8 +96,9 @@ Response Body (Success):
         "prodi": {
           "id": "e6314752-c753-47dc-bc82-eae480d1b094",
           "nama": "EXAMPLE 1",
+          "jenjang": "S1",
           "universitas": {
-            "id": "e6314752-c753-47dc-bc82-eae480d1b094",
+            "id": 1,
             "nama": "EXAMPLE 1",
             "jenis": "NEGERI",
             "logo_url": "example.png"
@@ -136,8 +141,12 @@ Response Body (Success):
     "prodi": {
       "id": "e6314752-c753-47dc-bc82-eae480d1b094",
       "nama": "EXAMPLE 1",
+      "jenjang": "S1",
+      "akreditasi": "Sangat Baik",
+      "biaya_pendaftaran": 200000.00,
+      "ukt": 14000000.00,
       "universitas": {
-        "id": "e6314752-c753-47dc-bc82-eae480d1b094",
+        "id": 1,
         "nama": "EXAMPLE 1",
         "jenis": "NEGERI",
         "logo_url": "example.png"
@@ -215,7 +224,7 @@ Response Body (Failed):
 ```
 
 ## Delete Pendaftaran By Id
-Endpoint: DELETE /api/v1/pendaftar/{id}\
+Endpoint: DELETE /api/v1/pendaftaran/{id}\
 Login: required
 
 Response Body (Success):
@@ -237,7 +246,7 @@ Response Body (Failed):
 ```
 
 ## Edit Status Pendaftaran
-Endpoint: PATCH /api/v1/pendaftar/{id}/status\
+Endpoint: PATCH /api/v1/pendaftaran/{id}/status\
 Login: required
 
 Request Type: application/json
@@ -270,7 +279,7 @@ Response Body (Failed):
 ## Process All Pendaftaran
 *for operator only
 
-Endpoint: PATCH /api/v1/pendaftar/{id}/status/proses\
+Endpoint: PATCH /api/v1/pendaftaran/proses\
 Login: required
 
 Response Body (Success):
