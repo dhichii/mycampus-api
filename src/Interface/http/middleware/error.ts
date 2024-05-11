@@ -10,6 +10,7 @@ export const errorMiddleware = async (
   if (error) {
     let status: number;
     let message: any[];
+
     if (error instanceof ResponseError) {
       status = error.status;
       message = [{message: error.message}];
@@ -17,7 +18,7 @@ export const errorMiddleware = async (
       status = 400;
       message = JSON.parse(error.message);
     } else {
-      status = 500; console.log(error);
+      status = 500;
       message = [{message: 'Internal Server Error'}];
     }
 
